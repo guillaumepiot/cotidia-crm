@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 from crm import settings as crm_settings 
 
@@ -68,23 +69,70 @@ class Contact(models.Model):
     # Address
     first_line = models.CharField(max_length=100, blank=True)
     second_line = models.CharField(max_length=100, blank=True)
+    county = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=100, blank=True)
     county = models.CharField(max_length=100, blank=True)
-    postcode = models.CharField(max_length=255, blank=True)
+    postcode = models.CharField(max_length=50, blank=True)
     country = models.CharField(max_length=2, choices=crm_settings.COUNTRIES, blank=True)
+    lat = models.DecimalField(max_digits=18, decimal_places=15, blank=True, null=True)
+    lng = models.DecimalField(max_digits=18, decimal_places=15, blank=True, null=True)
 
     # Website
     website = models.URLField(max_length=150, blank=True)
 
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
+        blank=True, null=True, related_name="user_created_contact")
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
+        blank=True, null=True, related_name="user_modified_contact")
     date_created = models.DateTimeField(auto_now_add=True) 
     date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('first_name', 'last_name')
+
+    def __unicode__(self):
+        return u'%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
+
+    def __str__(self):
+        return '%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
 
     @property
     def title_verbal(self):
         return dict(crm_settings.TITLE).get(self.title)
 
+    @property
+    def country_verbal(self):
+        return dict(crm_settings.COUNTRIES).get(self.country)
+
+    @property
+    def contact_number(self):
+        if self.phone_number and self.mobile_number:
+            return "%s / %s" % (self.phone_number, self.mobile_number)
+        elif self.phone_number:
+            return "%s" % (self.phone_number)
+        elif self.mobile_number:
+            return "%s" % (self.mobile_number)
+        else:
+            return ""
+
+    def notes(self):
+        return Note.objects.filter(contact=self)
+
+class Note(models.Model):
+    comment = models.TextField(max_length=3000)
+    contact = models.ForeignKey('crm.Contact', blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
+        blank=True, null=True, related_name="user_created")
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
+        blank=True, null=True, related_name="user_modified")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['date_created']
+
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return u'%s' % (self.comment)
 
     def __str__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return '%s' % (self.comment)

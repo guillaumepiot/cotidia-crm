@@ -1,0 +1,1 @@
+Contact = require './components/contact.coffee'

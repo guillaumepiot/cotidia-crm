@@ -10,8 +10,10 @@
 {% block content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         <a href="{% url 'crm-admin:category-list' %}">
-            {% trans "Category" %}
+            {% trans "Categories" %}
         </a>  
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         <a href="{% url 'crm-admin:category-detail' object.id %}">

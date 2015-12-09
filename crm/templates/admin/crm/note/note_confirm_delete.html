@@ -1,21 +1,21 @@
 {% extends "admin/account/page.html" %}{% load i18n %}
 {% block title %}
-    {% trans "Delete Contact" %}
+    {% trans "Delete Note" %}
 {% endblock title %}
 
 {% block toolbar %}
-    <span class="toolbar__title">{% trans "Contacts" %}</span>
+    <span class="toolbar__title">{% trans "Note" %}</span>
 {% endblock toolbar %}
 
 {% block content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">
-            {% trans "Contacts" %}
-        </a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
-        <a href="{% url 'crm-admin:contact-detail' object.id %}">
-            {{object}}
+        <a href="{% url 'crm-admin:contact-detail' contact.id %}">{{contact}}</a>  
+        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
+        <a href="{% url 'crm-admin:note-update' object.id %}">
+            {% trans "Note" %}
         </a>   
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% trans "Confirm Delete" %}
@@ -23,9 +23,9 @@
 </div>
 
 <div class="[ content__inner ] [ box box--padded box--bordered ]">
-    <h3>{% trans "Are you sure to delete the following contact?" %}</h3>
+    <h3>{% trans "Are you sure to delete the following note?" %}</h3>
     <p>
-    {{object}}
+    {{object|safe}}
     </p>
     <p>{% trans "The operation is not reversible." %}</p>
 </div>
@@ -36,7 +36,7 @@
         <button type="submit" class="btn btn--delete">
             {% trans "Confirm Delete" %}
         </button>
-        <a href="{% url 'crm-admin:contact-detail' object.id %}" class="btn btn--transparent">
+        <a href="{% url 'crm-admin:note-update' object.id %}" class="btn btn--transparent">
             {% trans "Cancel" %}
         </a>
     </form>

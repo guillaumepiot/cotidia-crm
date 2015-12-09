@@ -28,28 +28,18 @@
         <div class="content__inner">
             <table class="table table--clickable">
                 <tr class="table-row">
-                    <th class="table-head-cell">{% trans "Title" %}</th>
-                    <th class="table-head-cell">{% trans "Slug" %}</th>
-                    <th class="table-head-cell">{% trans "Active" %}</th>
-                    <th class="table-head-cell"></th>
+                    <th class="table-head-cell">{% trans "Name" %}</th>
+                    <th class="table-head-cell">{% trans "Contacts" %}</th>
                 </tr>
                 {% for object in object_list %}
                 <tr class="table-row" 
                     onClick="window.location = '{% url 'crm-admin:category-detail' object.id %}'">
-                    <td class="table-cell">{{object.title}}</td>
-                    <td class="table-cell">{{object.slug}}</td>
-                    <td class="table-cell">
-                        {% if object.active %}
-                            <span class="fa fa-check fa-green"></span>
-                        {% else %}
-                            <span class="fa fa-remove fa-red"></span>
-                        {% endif %}
-                    </td>
                     <td class="table-cell">
                         <a href="{% url 'crm-admin:category-detail' object.id %}">
-                            {% trans "Update" %}
+                            {{object.name}}
                         </a>
                     </td>
+                    <td class="table-cell"><span class="label">{{object.contacts.count}}</span></td>
                 </tr>
                 {% endfor %}
             </table>

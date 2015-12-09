@@ -31,6 +31,38 @@ class ContactAddForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={'class':'form__text', 'placeholder': _('Last name')})
         )
+
+    email = forms.EmailField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(
+            attrs={'class':'form__text'}),
+        required=False
+        )
+
+    phone_number = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(
+            attrs={'class':'form__text'}),
+        required=False
+        )
+
+    mobile_number = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(
+            attrs={'class':'form__text'}),
+        required=False
+        )
+
+    website = forms.URLField(
+        label='', 
+        max_length=150, 
+        widget=forms.TextInput(
+            attrs={'class':'form__text'}),
+        required=False
+        )
         
     company = forms.ModelChoiceField(
         label="",
@@ -43,6 +75,63 @@ class ContactAddForm(forms.ModelForm):
         label='',
         widget=forms.CheckboxSelectMultiple,
         queryset=Category.objects.all(),
+        required=False
+        )
+
+    #
+    # Address
+    #
+    first_line = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(attrs={'placeholder':_("First line"), 'class':'form__text'}),
+        required=False
+        )
+
+    second_line = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(attrs={'placeholder':_("Second line"), 'class':'form__text'}),
+        required=False
+        )
+
+    county = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(attrs={'placeholder':_("County / State"), 'class':'form__text'}),
+        required=False
+        )
+
+    city = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(attrs={'placeholder':_("City"), 'class':'form__text'}),
+        required=False
+        )
+
+    postcode = forms.CharField(
+        label='', 
+        max_length=50, 
+        widget=forms.TextInput(attrs={'placeholder':_("Postcode"), 'class':'form__text'}),
+        required=False
+        )
+
+    country = forms.ChoiceField(
+        label="",
+        choices=crm_settings.COUNTRIES,
+        widget=forms.Select(attrs={'class':'form__select'}),
+        required=False
+        )
+
+    lat = forms.DecimalField(
+        label='', 
+        widget=forms.HiddenInput(attrs={'placeholder':_("Latitude"), 'class':'form__text'}),
+        required=False
+        )
+
+    lng = forms.DecimalField(
+        label='', 
+        widget=forms.HiddenInput(attrs={'placeholder':_("Longitude"), 'class':'form__text'}),
         required=False
         )
         

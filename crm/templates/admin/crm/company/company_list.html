@@ -30,19 +30,17 @@
                 <tr class="table-row">
                     <th class="table-head-cell">{% trans "Name" %}</th>
                     <th class="table-head-cell">{% trans "Contacts" %}</th>
-                    <th class="table-head-cell"></th>
                 </tr>
                 {% for object in object_list %}
                 <tr class="table-row" 
                     onClick="window.location = '{% url 'crm-admin:company-detail' object.id %}'">
-                    <td class="table-cell">{{object.name}}</td>
-                    <td class="table-cell">
-                        <span class="label">{{object.contacts.count}}</span>
-                    </td>
                     <td class="table-cell">
                         <a href="{% url 'crm-admin:company-detail' object.id %}">
-                            {% trans "Update" %}
+                            {{object.name}}
                         </a>
+                    </td>
+                    <td class="table-cell">
+                        <span class="label">{{object.contacts.count}}</span>
                     </td>
                 </tr>
                 {% endfor %}

@@ -8,13 +8,18 @@
 {% endblock title %}
 
 {% block toolbar %}
-    <span class="toolbar__title">{% trans "Contact" %}</span>
+    <span class="toolbar__title">{% trans "Contacts" %}</span>
 {% endblock toolbar %}
+
+{% block header_scripts %}
+    {{block.super}}
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+{% endblock header_scripts %}
 
 {% block content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contact" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% if object %}
             <a href="{% url 'crm-admin:contact-detail' object.id %}">{{object}}</a>  
@@ -28,20 +33,27 @@
 <form action="" method="post" class="form" enctype="multipart/form-data">
 {% csrf_token %}
 {% if form.non_field_errors %}
-    <div class="alert alert--error">
-    {% for error in form.non_field_errors %}
-        {{error}}<br>
-    {% endfor %}
+    <div class="content__inner">
+        <div class="alert alert--error">
+        {% for error in form.non_field_errors %}
+            {{error}}<br>
+        {% endfor %}
+        </div>
     </div>
 {% endif %}
 {% if form.errors %}
-    <div class="alert alert--error">
-    {% for error in form.errors %}
-        {{error}}<br>
-    {% endfor %}
+    <div class="content__inner">
+        <div class="alert alert--error">
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{error}}<br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </div>
     </div>
 {% endif %}
-
 <div class="[ content__inner ] [ box box--padded box--bordered ]">
     <fieldset>
         <legend>{% trans "Name & Company" %}</legend>
@@ -97,6 +109,105 @@
 </div>
 <div class="[ content__inner ] [ box box--padded box--bordered ]">
     <fieldset>
+        <legend>{% trans "Contact" %}</legend>
+        <div class="content-inner">
+            <div class="grid">
+                <div class="grid__span-2">
+                    <span class="form__label--inline">
+                        {% trans "Email" %}
+                    </span>
+                </div> 
+                <div class="grid__span-3">
+                    {% with form.email as field %}
+                        {% include "admin/includes/text-field.html" %}
+                    {% endwith %}
+                </div> 
+            </div>
+            <div class="grid">
+                <div class="grid__span-2">
+                    <span class="form__label--inline">
+                        {% trans "Phone number" %}
+                    </span>
+                </div> 
+                <div class="grid__span-3">
+                    {% with form.phone_number as field %}
+                        {% include "admin/includes/text-field.html" %}
+                    {% endwith %}
+                </div> 
+            </div>
+            <div class="grid">
+                <div class="grid__span-2">
+                    <span class="form__label--inline">
+                        {% trans "Mobile number" %}
+                    </span>
+                </div> 
+                <div class="grid__span-3">
+                    {% with form.mobile_number as field %}
+                        {% include "admin/includes/text-field.html" %}
+                    {% endwith %}
+                </div> 
+            </div>
+            <div class="grid">
+                <div class="grid__span-2">
+                    <span class="form__label--inline">
+                        {% trans "Website" %}
+                    </span>
+                </div> 
+                <div class="grid__span-3">
+                    {% with form.website as field %}
+                        {% include "admin/includes/text-field.html" %}
+                    {% endwith %}
+                </div> 
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <fieldset>
+        <legend>{% trans "Location" %}</legend>
+        <div class="grid">
+            <div class="grid__span-2">
+                <span class="form__label--inline">
+                    {% trans "Address" %}
+                </span>
+            </div>
+            <div class="grid__span-3">
+                {% with form.first_line as field %}
+                    {% include "admin/includes/text-field.html" %}
+                {% endwith %}
+                {% with form.second_line as field %}
+                    {% include "admin/includes/text-field.html" %}
+                {% endwith %}
+                {% with form.city as field %}
+                    {% include "admin/includes/text-field.html" %}
+                {% endwith %}
+                {% with form.county as field %}
+                    {% include "admin/includes/text-field.html" %}
+                {% endwith %}
+                {% with form.postcode as field %}
+                    {% include "admin/includes/text-field.html" %}
+                {% endwith %}
+                {% with form.country as field %}
+                    {% include "admin/includes/select-field.html" %}
+                {% endwith %}
+                {{form.lat}}
+                {{form.lng}}
+                <p>
+                    <a href="#" id="contact-form-geolocate">
+                        {% trans "Geolocate address" %}
+                    </a>
+                </p>
+            </div>  
+            <div class="grid__span-7">
+                <div id="contact-form-map"></div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <fieldset>
         <legend>{% trans "Categories" %}</legend>
         <div class="grid">
             <div class="grid__span-2">
@@ -116,6 +227,11 @@
     <button type="submit" class="btn btn--primary">
         {% trans "Save" %}
     </button>
+    {% if object and perms.crm.delete_contact %}
+    <a href="{% url 'crm-admin:contact-delete' object.id %}" class="btn btn--delete btn--transparent pull-right">
+        {% trans "Delete Contact" %}
+    </a>
+    {% endif %}
 </div>
 </form>
 {% endblock content %}

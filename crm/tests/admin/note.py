@@ -2,9 +2,9 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
 from account.models import User
-from crm.models import Category
+from crm.models import Note, Contact
 
-class CategoryTests(TestCase):
+class NoteTests(TestCase):
 
     def setUp(self):
         """
@@ -23,21 +23,28 @@ class CategoryTests(TestCase):
         self.user.set_password("demo")
         self.user.save()
 
+        # Create a new contact
+        self.contact = Contact.objects.create(
+            title="mr",
+            first_name="Steve",
+            last_name="Brown")
+
         # Create a default object, to use with update, retrieve, list & delete
-        self.object = Category.objects.create(
-            name="Test category"
+        self.object = Note.objects.create(
+            comment="test note",
+            contact=self.contact
             )
 
         # Create the client and login the user
         self.c = Client()
         self.c.login(username=self.user.username, password='demo')
 
-    def test_add_category(self):
+    def test_add_note(self):
         """
         Test that we can add a new object
         """
 
-        url = reverse('crm-admin:category-add')
+        url = "%s?contact=%s" % (reverse('crm-admin:note-add'), self.contact.id)
 
         # Test that the page load first
         response = self.c.get(url)
@@ -45,22 +52,22 @@ class CategoryTests(TestCase):
 
         # Send data
         data = {
-            'name': 'Test category'
+            'comment': 'value'
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
         # Get the latest added object
-        obj = Category.objects.filter().latest('id')
-        self.assertEqual(obj.name, 'Test category')
+        obj = Note.objects.filter().latest('id')
+        self.assertEqual(obj.comment, 'value')
 
 
-    def test_update_category(self):
+    def test_update_note(self):
         """
         Test that we can update an existing object
         """
 
-        url = reverse('crm-admin:category-update', 
+        url = reverse('crm-admin:note-update', 
             kwargs={
                 'pk': self.object.id
                 }
@@ -72,47 +79,47 @@ class CategoryTests(TestCase):
 
         # Send data
         data = {
-            'name': 'Other category'
+            'comment': 'other value'
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
         # Get the latest added object
-        obj = Category.objects.get(id=self.object.id)
-        self.assertEqual(obj.name, 'Other category')
+        obj = Note.objects.get(id=self.object.id)
+        self.assertEqual(obj.comment, 'other value')
 
-    def test_retrieve_category(self):
-        """
-        Test that we can retrieve an object from its ID
-        """
+    # def test_retrieve_note(self):
+    #     """
+    #     Test that we can retrieve an object from its ID
+    #     """
 
-        url = reverse('crm-admin:category-detail', 
-            kwargs={
-                'pk': self.object.id
-                }
-            )
+    #     url = reverse('crm-admin:note-detail', 
+    #         kwargs={
+    #             'pk': self.object.id
+    #             }
+    #         )
 
-        # Test that the page load first
-        response = self.c.get(url)
-        self.assertEqual(response.status_code, 200)
+    #     # Test that the page load first
+    #     response = self.c.get(url)
+    #     self.assertEqual(response.status_code, 200)
 
-    def test_list_category(self):
-        """
-        Test that we can list objects
-        """
+    # def test_list_note(self):
+    #     """
+    #     Test that we can list objects
+    #     """
 
-        url = reverse('crm-admin:category-list')
+    #     url = reverse('crm-admin:note-list')
 
-        # Test that the page load first
-        response = self.c.get(url)
-        self.assertEqual(response.status_code, 200)
+    #     # Test that the page load first
+    #     response = self.c.get(url)
+    #     self.assertEqual(response.status_code, 200)
 
-    def test_delete_category(self):
+    def test_delete_note(self):
         """
         Test that we can delete an object
         """
 
-        url = reverse('crm-admin:category-delete', 
+        url = reverse('crm-admin:note-delete', 
             kwargs={
                 'pk': self.object.id
                 }
@@ -127,5 +134,5 @@ class CategoryTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
         # Test that the record has been deleted
-        obj = Category.objects.filter(id=self.object.id)
+        obj = Note.objects.filter(id=self.object.id)
         self.assertEqual(obj.count(), 0)

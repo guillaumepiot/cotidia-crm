@@ -1,0 +1,90 @@
+{% extends "admin/account/page.html" %}{% load i18n staticfiles %}
+{% block title %}
+    {% if object %}
+        {% trans "Edit Note" %}
+    {% else %}
+        {% trans "Add a Note" %}
+    {% endif %}
+{% endblock title %}
+
+{% block header_scripts %}
+    <link rel="stylesheet" type="text/css" href="{% static "trix/trix.css" %}">
+    <script type="text/javascript" src="{% static "trix/trix.js" %}"></script>
+{% endblock header_scripts %}
+
+{% block toolbar %}
+    <span class="toolbar__title">{% trans "Note" %}</span>
+{% endblock toolbar %}
+
+{% block content %}
+<div class="[ content__inner ]">
+    <p class="breadcrumb">
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
+        {% if contact %}
+            <a href="{% url 'crm-admin:contact-detail' contact.id %}">{{contact}}</a>  
+            &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
+        {% endif %}
+        {% if object %}
+            {% trans "Edit Note" %}
+        {% else %}
+            {% trans "Add a Note" %}
+        {% endif %}
+    </p>
+</div>
+<form action="" method="post" class="form" enctype="multipart/form-data">
+{% csrf_token %}
+{% if form.non_field_errors %}
+    <div class="content__inner">
+        <div class="alert alert--error">
+        {% for error in form.non_field_errors %}
+            {{error}}<br>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
+{% if form.errors %}
+    <div class="content__inner">
+        <div class="alert alert--error">
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{error}}<br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
+{% if contact %}
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <fieldset>
+        <legend>{% trans "Note" %}</legend>
+        <div class="grid">
+            <div class="grid__span-6">
+                {% with form.comment as field %}
+                    <trix-editor input="id_comment"></trix-editor>
+                    {% include "admin/includes/text-field.html" %}
+                {% endwith %}
+            </div>  
+        </div>
+    </fieldset>
+</div>
+<div class="content__inner">
+    <button type="submit" class="btn btn--primary">
+        {% trans "Save" %}
+    </button>
+    {% if object and perms.crm.delete_note %}
+    <a href="{% url 'crm-admin:note-delete' object.id %}" class="btn btn--delete btn--transparent pull-right">
+        {% trans "Delete Note" %}
+    </a>
+    {% endif %}
+</div>
+</form>
+{% else %}
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <p>{% trans "Notes can't be added without a contact reference. Please select a contact first." %}</p>
+    <p><a href="{% url 'crm-admin:contact-list' %}">{% trans "Back to contact list" %}</a></p>
+</div>
+{% endif %}
+{% endblock content %}

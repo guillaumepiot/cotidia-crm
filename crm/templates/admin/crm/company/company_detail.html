@@ -1,6 +1,6 @@
 {% extends "admin/account/page.html" %}{% load i18n humanize %}
 {% block title %}
-    {% trans "Offer details" %}
+    {% trans "Company details" %}
 {% endblock title %}
 
 {% block toolbar %}
@@ -15,48 +15,19 @@
 {% block content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:company-list' %}">{% trans "Company" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
+        <a href="{% url 'crm-admin:company-list' %}">{% trans "Companies" %}</a>  
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% trans "Company details" %}
     </p>
 </div>
 
-<div class="[ content__inner ] [ box box--padded box--bordered ]">
-    <fieldset>
-        <div class="grid">
-            <div class="grid__span-12">
-                <h3>{{object.name}}</h3>
-            </div>
-        </div>
-        <div class="content-inner">
-            <table class="table table--clickable">
-                <tr class="table-row">
-                    <th class="table-head-cell">{% trans "Name" %}</th>
-                    <th class="table-head-cell">{% trans "Company" %}</th>
-                    <th class="table-head-cell">{% trans "Categories" %}</th>
-                    <th class="table-head-cell"></th>
-                </tr>
-                {% for object in object.contacts %}
-                <tr class="table-row" 
-                    onClick="window.location = '{% url 'crm-admin:contact-detail' object.id %}'">
-                    <td class="table-cell">{{object}}</td>
-                    <td class="table-cell">{{object.company}}</td>
-                    <td class="table-cell">
-                        {{object.category.all|join:", "}}
-                        {% for c in object.category.all %}
-                            {{c.name}}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td class="table-cell">
-                        <a href="{% url 'crm-admin:contact-detail' object.id %}">
-                            {% trans "Update" %}
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </fieldset>
+<div class="[ content__inner ]">
+    <h1>{{object.name}}</h1>
+    {% with object.contacts as object_list %}
+        {% include 'admin/crm/contact_list.html' %}
+    {% endwith %}
 </div>
 
 <div class="content__inner">

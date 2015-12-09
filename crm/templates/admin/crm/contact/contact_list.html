@@ -1,6 +1,6 @@
 {% extends "admin/account/page.html" %}{% load i18n %}
 {% block title %}
-    {% trans "Contact" %}
+    {% trans "Contacts" %}
 {% endblock title %}
 
 {% block toolbar %}
@@ -22,74 +22,61 @@
         <span class="fa fa-tags"></span> {% trans "Categories" %}
     </a>
     {% endif %}
-    <span class="toolbar__title">{% trans "Contact" %}</span>
+    <span class="toolbar__title">{% trans "Contacts" %}</span>
 {% endblock toolbar %}
 
 {% block content %}
 <div class="grid grid--collapse">
     <div class="grid__span-12">
         <div class="content__inner">
-            <div class="filter-alpha">
-                <a href="?" class="btn btn--small">{% trans "All contacts" %}</a>
-                <a href="?first_letter=A" class="btn btn--small{% if first_letter == 'A' %} btn--active{% endif %}">A</a>
-                <a href="?first_letter=B" class="btn btn--small{% if first_letter == 'B' %} btn--active{% endif %}">B</a>
-                <a href="?first_letter=C" class="btn btn--small{% if first_letter == 'C' %} btn--active{% endif %}">C</a>
-                <a href="?first_letter=D" class="btn btn--small{% if first_letter == 'D' %} btn--active{% endif %}">D</a>
-                <a href="?first_letter=E" class="btn btn--small{% if first_letter == 'E' %} btn--active{% endif %}">E</a>
-                <a href="?first_letter=F" class="btn btn--small{% if first_letter == 'F' %} btn--active{% endif %}">F</a>
-                <a href="?first_letter=G" class="btn btn--small{% if first_letter == 'G' %} btn--active{% endif %}">G</a>
-                <a href="?first_letter=H" class="btn btn--small{% if first_letter == 'H' %} btn--active{% endif %}">H</a>
-                <a href="?first_letter=I" class="btn btn--small{% if first_letter == 'I' %} btn--active{% endif %}">I</a>
-                <a href="?first_letter=J" class="btn btn--small{% if first_letter == 'J' %} btn--active{% endif %}">J</a>
-                <a href="?first_letter=K" class="btn btn--small{% if first_letter == 'K' %} btn--active{% endif %}">K</a>
-                <a href="?first_letter=L" class="btn btn--small{% if first_letter == 'L' %} btn--active{% endif %}">L</a>
-                <a href="?first_letter=M" class="btn btn--small{% if first_letter == 'M' %} btn--active{% endif %}">M</a>
-                <a href="?first_letter=N" class="btn btn--small{% if first_letter == 'N' %} btn--active{% endif %}">N</a>
-                <a href="?first_letter=O" class="btn btn--small{% if first_letter == 'O' %} btn--active{% endif %}">O</a>
-                <a href="?first_letter=P" class="btn btn--small{% if first_letter == 'P' %} btn--active{% endif %}">P</a>
-                <a href="?first_letter=Q" class="btn btn--small{% if first_letter == 'Q' %} btn--active{% endif %}">Q</a>
-                <a href="?first_letter=R" class="btn btn--small{% if first_letter == 'R' %} btn--active{% endif %}">R</a>
-                <a href="?first_letter=S" class="btn btn--small{% if first_letter == 'S' %} btn--active{% endif %}">S</a>
-                <a href="?first_letter=T" class="btn btn--small{% if first_letter == 'T' %} btn--active{% endif %}">T</a>
-                <a href="?first_letter=U" class="btn btn--small{% if first_letter == 'U' %} btn--active{% endif %}">U</a>
-                <a href="?first_letter=V" class="btn btn--small{% if first_letter == 'V' %} btn--active{% endif %}">V</a>
-                <a href="?first_letter=W" class="btn btn--small{% if first_letter == 'W' %} btn--active{% endif %}">W</a>
-                <a href="?first_letter=X" class="btn btn--small{% if first_letter == 'X' %} btn--active{% endif %}">X</a>
-                <a href="?first_letter=Y" class="btn btn--small{% if first_letter == 'Y' %} btn--active{% endif %}">Y</a>
-                <a href="?first_letter=Z" class="btn btn--small{% if first_letter == 'Z' %} btn--active{% endif %}">Z</a>
-            </div>
-            <table class="table table--clickable">
-                <tr class="table-row">
-                    <th class="table-head-cell">{% trans "Name" %}</th>
-                    <th class="table-head-cell">{% trans "Company" %}</th>
-                    <th class="table-head-cell">{% trans "Categories" %}</th>
-                    <th class="table-head-cell"></th>
-                </tr>
-                {% for object in object_list %}
-                <tr class="table-row" 
-                    onClick="window.location = '{% url 'crm-admin:contact-detail' object.id %}'">
-                    <td class="table-cell">{{object}}</td>
-                    <td class="table-cell">{{object.company}}</td>
-                    <td class="table-cell">
-                        {{object.category.all|join:", "}}
-                    </td>
-                    <td class="table-cell">
-                        <a href="{% url 'crm-admin:contact-detail' object.id %}">
-                            {% trans "Update" %}
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                {% if first_letter %}
-                    <tr class="table-row">
-                        <td colspan="4" class="table-cell">
-                            {% trans "We found no contacts starting with:" %} {{first_letter}}
-                            - <a href="?">{% trans "Reset" %}</a>
-                        </td>
-                    </tr>
+            <div class="filter-contact">
+                <div class="filter-contact--alpha">
+                    <a href="?" class="btn btn--small">{% trans "All contacts" %}</a>
+                    <a href="?first_letter=A" class="btn btn--small{% if first_letter == 'A' %} btn--active{% endif %}">A</a>
+                    <a href="?first_letter=B" class="btn btn--small{% if first_letter == 'B' %} btn--active{% endif %}">B</a>
+                    <a href="?first_letter=C" class="btn btn--small{% if first_letter == 'C' %} btn--active{% endif %}">C</a>
+                    <a href="?first_letter=D" class="btn btn--small{% if first_letter == 'D' %} btn--active{% endif %}">D</a>
+                    <a href="?first_letter=E" class="btn btn--small{% if first_letter == 'E' %} btn--active{% endif %}">E</a>
+                    <a href="?first_letter=F" class="btn btn--small{% if first_letter == 'F' %} btn--active{% endif %}">F</a>
+                    <a href="?first_letter=G" class="btn btn--small{% if first_letter == 'G' %} btn--active{% endif %}">G</a>
+                    <a href="?first_letter=H" class="btn btn--small{% if first_letter == 'H' %} btn--active{% endif %}">H</a>
+                    <a href="?first_letter=I" class="btn btn--small{% if first_letter == 'I' %} btn--active{% endif %}">I</a>
+                    <a href="?first_letter=J" class="btn btn--small{% if first_letter == 'J' %} btn--active{% endif %}">J</a>
+                    <a href="?first_letter=K" class="btn btn--small{% if first_letter == 'K' %} btn--active{% endif %}">K</a>
+                    <a href="?first_letter=L" class="btn btn--small{% if first_letter == 'L' %} btn--active{% endif %}">L</a>
+                    <a href="?first_letter=M" class="btn btn--small{% if first_letter == 'M' %} btn--active{% endif %}">M</a>
+                    <a href="?first_letter=N" class="btn btn--small{% if first_letter == 'N' %} btn--active{% endif %}">N</a>
+                    <a href="?first_letter=O" class="btn btn--small{% if first_letter == 'O' %} btn--active{% endif %}">O</a>
+                    <a href="?first_letter=P" class="btn btn--small{% if first_letter == 'P' %} btn--active{% endif %}">P</a>
+                    <a href="?first_letter=Q" class="btn btn--small{% if first_letter == 'Q' %} btn--active{% endif %}">Q</a>
+                    <a href="?first_letter=R" class="btn btn--small{% if first_letter == 'R' %} btn--active{% endif %}">R</a>
+                    <a href="?first_letter=S" class="btn btn--small{% if first_letter == 'S' %} btn--active{% endif %}">S</a>
+                    <a href="?first_letter=T" class="btn btn--small{% if first_letter == 'T' %} btn--active{% endif %}">T</a>
+                    <a href="?first_letter=U" class="btn btn--small{% if first_letter == 'U' %} btn--active{% endif %}">U</a>
+                    <a href="?first_letter=V" class="btn btn--small{% if first_letter == 'V' %} btn--active{% endif %}">V</a>
+                    <a href="?first_letter=W" class="btn btn--small{% if first_letter == 'W' %} btn--active{% endif %}">W</a>
+                    <a href="?first_letter=X" class="btn btn--small{% if first_letter == 'X' %} btn--active{% endif %}">X</a>
+                    <a href="?first_letter=Y" class="btn btn--small{% if first_letter == 'Y' %} btn--active{% endif %}">Y</a>
+                    <a href="?first_letter=Z" class="btn btn--small{% if first_letter == 'Z' %} btn--active{% endif %}">Z</a>
+                </div>
+                <span class="label">
+                {% if total > 1 %}
+                    {{total}} {% trans "contacts" %}
+                {% else %}
+                    {{total}} {% trans "contact" %}
                 {% endif %}
-                {% endfor %}
-            </table>
+                </span>
+            </div>
+            <form action="" method="get" class="contact-search-form">
+                <div class="form__control form__control--text">
+                    <input type="text" name="query" class="form__text" 
+                        value="{% if search_query %}{{search_query}}{% endif %}">
+                    <button type="submit" class="btn btn--transparent">
+                        <span class="fa fa-search"></span>
+                    </button>
+                </div>
+            </form>
+            {% include 'admin/crm/contact_list.html' %}
             {% include 'admin/includes/pagination.html' %}
         </div>
     </div>

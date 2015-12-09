@@ -1,7 +1,12 @@
 {% extends "admin/account/page.html" %}{% load i18n humanize %}
 {% block title %}
-    {% trans "Offer details" %}
+    {% trans "Contact details" %}
 {% endblock title %}
+
+{% block header_scripts %}
+    {{block.super}}
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+{% endblock header_scripts %}
 
 {% block toolbar %}
     <a href="{% url 'crm-admin:contact-update' object.id %}" 
@@ -9,87 +14,190 @@
         <span class="fa fa-pencil"></span>
         {% trans "Edit Contact" %}
     </a>
-    <span class="toolbar__title">{% trans "Contact" %}</span>
+    <span class="toolbar__title">{% trans "Contacts" %}</span>
 {% endblock toolbar %}
 
 {% block content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contact" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% trans "Contact details" %}
     </p>
 </div>
-
-<div class="[ content__inner ] [ box box--padded box--bordered ]">
-    <fieldset>
-        <legend>{% trans "Name & Company" %}</legend>
-        <div class="grid">
-            <div class="grid__span-2">
-                <span class="form__label--inline">
-                    {% trans "Title" %}
-                </span>
-            </div>
-            <div class="grid__span-3">
-                <p>{{object.title_verbal}}</p>
-            </div>  
-        </div>
-        <div class="grid">
-            <div class="grid__span-2">
-                <span class="form__label--inline">
-                    {% trans "Full name" %}
-                </span>
-            </div>
-            <div class="grid__span-3">
-                <p>{{object.first_name}} {{object.last_name}}</p>
-            </div>  
-        </div>
-        <div class="grid">
-            <div class="grid__span-2">
-                <span class="form__label--inline">
-                    {% trans "Company" %}
-                </span>
-            </div>
-            <div class="grid__span-3">
-                <p>
-                    <a href="{% url 'crm-admin:company-detail' object.company.id %}">
-                        {{object.company}}
-                    </a>
-                </p>
-            </div>  
-        </div>
-    </fieldset>
+<div class="[ content__inner ]">
+    <h1>{{object}}</h1>
 </div>
 <div class="[ content__inner ] [ box box--padded box--bordered ]">
-    <fieldset>
-        <legend>{% trans "Categories" %}</legend>
-        <div class="grid">
-            <div class="grid__span-2">
-                <span class="form__label--inline">
-                    &nbsp;
-                </span>
-            </div>
-            <div class="grid__span-3">
-                <p>
+    <div class="grid">
+        <div class="grid__span-6">
+            <p>
+                <span class="attribute-label">{% trans "Email" %}</span><br>
+                <a href="mailto:{{object.email}}">{{object.email}}</a>
+            </p>
+            {% if object.phone_number %}
+            <p>
+                <span class="attribute-label">{% trans "Phone" %}</span><br>
+                <a href="tel:{{object.phone_number}}">{{object.phone_number}}</a><br>
+            </p>
+            {% endif %}
+            {% if object.mobile_number %}
+            <p>
+                <span class="attribute-label">{% trans "Mobile" %}</span><br>
+                <a href="tel:{{object.mobile_number}}">{{object.mobile_number}}</a>
+            </p>
+            {% endif %}
+            <p>
+                <span class="attribute-label">{% trans "Website" %}</span><br>
+                {% if object.website %}
+                    <a href="{{object.website}}" target="blank">
+                        {{object.website}}
+                    </a><br>
+                {% else %}
+                {% trans "No website" %}  
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="grid__span-6">
+            <p>
+                <span class="attribute-label">{% trans "Company" %}</span><br>
+                {% if object.company %}
+                <a href="{% url 'crm-admin:company-detail' object.company.id %}">
+                    {{object.company}}
+                </a>
+                {% else %}
+                {% trans "No company assigned" %}    
+                {% endif %}
+                
+            </p>
+            <p>
+                <span class="attribute-label">{% trans "Categories" %}</span><br>
                 {% for c in object.category.all %}
                     <a href="{% url 'crm-admin:category-detail' c.id %}">{{c}}</a><br>
+                {% empty %}
+                {% trans "No category assigned" %}    
                 {% endfor %}
-                </p>
-            </div>  
+            </p>
         </div>
-    </fieldset>
+    </div>
+</div>
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <div class="grid">
+        <div class="grid__span-6">
+            <p>
+            <span class="attribute-label">{% trans "Address" %}</span><br>
+            {% if object.first_line %}
+                {{object.first_line}}<br/>
+            {% endif %}
+            {% if object.second_line %}
+                {{object.second_line}}<br/>
+            {% endif %}
+            {% if object.city %}
+                {{object.city}}<br/>
+            {% endif %}
+            {% if object.county %}
+                {{object.county}}<br/>
+            {% endif %}
+            {% if object.postcode %}
+                {{object.postcode}}<br/>
+            {% endif %}
+            {% if object.country %}
+                {{object.country_verbal}}<br/>
+            {% endif %}
+            </p>
+        </div>  
+        <div class="grid__span-6">
+            <div class="content-inner">
+                <input type="hidden" value="{{object.first_name}}" id="id_first_name"/>
+                <input type="hidden" value="{{object.last_name}}" id="id_last_name"/>
+                <input type="hidden" value="{{object.first_line}}" id="id_first_line"/>
+                <input type="hidden" value="{{object.second_line}}" id="id_second_line"/>
+                <input type="hidden" value="{{object.county}}" id="id_county"/>
+                <input type="hidden" value="{{object.city}}" id="id_city"/>
+                <input type="hidden" value="{{object.postcode}}" id="id_postcode"/>
+                <input type="hidden" value="{{object.country}}" id="id_country"/>
+                <input id="id_lat" name="lat" type="hidden" value="{{object.lat}}">
+                <input id="id_lng" name="lng" type="hidden" value="{{object.lng}}">
+                <div id="contact-form-map"></div>
+            </div>
+        </div>
+    </div>
+</div>     
+
+<div class="grid grid--collapse">
+    <div class="grid__span-6">
+        <div class="[ content__inner ] [ box box--padded box--bordered ]">
+            <p>
+            <span class="attribute-label">{% trans "Notes" %}</span><br>
+            </p>
+            {% for note in contact.notes %}
+                <div class="note">
+                    {{note.comment|safe}}
+                    <div class="note__log">
+                        {% if note.modified_by %}
+                            {% trans "Modified by" %}
+                            {{note.modified_by}} - {{note.date_modified}}
+                        {% else %}
+                            {% trans "Created by" %}
+                            {{note.created_by}} - {{note.date_created}}
+                        {% endif %}
+                        <a href="{% url 'crm-admin:note-update' note.id %}"
+                            class="note__edit">
+                            {% trans "edit" %}
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>{% trans "No notes have been written." %}
+                    <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}">
+                        {% trans "Write the first note" %}
+                    </a>
+                </p>
+            {% endfor %}
+            {% if contact.notes %}
+                <p>
+                    <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
+                        class="btn btn--create btn--small">
+                        {% trans "Add a new note" %}
+                    </a>
+                </p>
+            {% endif %}
+        </div> 
+    </div>  
+    <div class="grid__span-6">
+        <div class="[ content__inner ] [ box box--padded box--bordered ]">
+            <p>
+                <span class="attribute-label">{% trans "Actions" %}</span><br>
+            </p>
+            <p>
+                <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
+                    class="btn btn--create btn--small">
+                    {% trans "Add a new action" %}
+                </a>
+            </p>
+        </div>
+    </div>
 </div>
 
-<div class="content__inner">
-    {% if perms.crm.delete_contact %}
-    <a href="{% url 'crm-admin:contact-delete' object.id %}" class="btn btn--delete btn--transparent pull-right">
-        {% trans "Delete Contact" %}
-    </a>
-    {% endif %}
-    {% if perms.crm.change_contact %}
-    <a href="{% url 'crm-admin:contact-update' object.id %}" class="btn btn--change">
-        {% trans "Edit Contact" %}
-    </a>
-    {% endif %}
-</div>      
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <div class="grid">
+        <div class="grid__span-6">
+            <p>
+                <span class="attribute-label">{% trans "Created" %}</span><br>
+                {{object.created_by}} - {{object.date_created}}
+            </p>
+        </div>  
+        <div class="grid__span-6">
+            <p>
+                <span class="attribute-label">{% trans "Modified" %}</span><br>
+                {% if object.modified_by %}
+                    {{object.modified_by}} - {{object.date_modified}}
+                {% else %}
+                    {% trans "Not modified." %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>     
 {% endblock content %}

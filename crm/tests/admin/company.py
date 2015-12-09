@@ -25,7 +25,7 @@ class CompanyTests(TestCase):
 
         # Create a default object, to use with update, retrieve, list & delete
         self.object = Company.objects.create(
-            attr="test"
+            name="Test company"
             )
 
         # Create the client and login the user
@@ -45,14 +45,14 @@ class CompanyTests(TestCase):
 
         # Send data
         data = {
-            'attr': 'value'
+            'name': 'Test company'
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
         # Get the latest added object
         obj = Company.objects.filter().latest('id')
-        self.assertEqual(obj.attr, 'value')
+        self.assertEqual(obj.name, 'Test company')
 
 
     def test_update_company(self):
@@ -72,14 +72,14 @@ class CompanyTests(TestCase):
 
         # Send data
         data = {
-            'attr': 'other value'
+            'name': 'Other company'
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
         # Get the latest added object
         obj = Company.objects.get(id=self.object.id)
-        self.assertEqual(obj.attr, 'other value')
+        self.assertEqual(obj.name, 'Other company')
 
     def test_retrieve_company(self):
         """
