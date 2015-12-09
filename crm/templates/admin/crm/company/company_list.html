@@ -1,0 +1,53 @@
+{% extends "admin/account/page.html" %}{% load i18n %}
+{% block title %}
+    {% trans "Company" %}
+{% endblock title %}
+
+{% block toolbar %}
+    {% if perms.crm.add_company %}
+    <a href="{% url 'crm-admin:company-add' %}"
+        class="[ toolbar__item ] [ btn btn--create btn--small pull-right ]">
+        <span class="fa fa-plus"></span> {% trans "Add a Company" %}
+    </a>
+    {% endif %}
+    <span class="toolbar__title">{% trans "Company" %}</span>
+{% endblock toolbar %}
+
+{% block content %}
+
+<div class="[ content__inner ]">
+    <p class="breadcrumb">
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
+        {% trans "Companies" %}
+    </p>
+</div>
+
+<div class="grid grid--collapse">
+    <div class="grid__span-12">
+        <div class="content__inner">
+            <table class="table table--clickable">
+                <tr class="table-row">
+                    <th class="table-head-cell">{% trans "Name" %}</th>
+                    <th class="table-head-cell">{% trans "Contacts" %}</th>
+                    <th class="table-head-cell"></th>
+                </tr>
+                {% for object in object_list %}
+                <tr class="table-row" 
+                    onClick="window.location = '{% url 'crm-admin:company-detail' object.id %}'">
+                    <td class="table-cell">{{object.name}}</td>
+                    <td class="table-cell">
+                        <span class="label">{{object.contacts.count}}</span>
+                    </td>
+                    <td class="table-cell">
+                        <a href="{% url 'crm-admin:company-detail' object.id %}">
+                            {% trans "Update" %}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

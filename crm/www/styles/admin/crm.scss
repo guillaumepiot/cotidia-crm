@@ -1,0 +1,38 @@
+@import "./../../../../www/styles/admin/settings";
+
+.filter-alpha{
+	margin-bottom: calc-em($vertical_padding);
+	.btn{
+		float: left;
+		border-right: none;
+		border-radius: 0;
+		border-color: #ccc;
+		background-color: transparent;
+		color: #666;
+		&:hover{
+			background-color: #eee;
+		}
+		&--active{
+			color: #fff;
+			background-color: #ccc;
+			&:hover{
+				color: #fff;
+				background-color: #bbb;
+			}
+		}
+		&:first-child{
+			border-top-left-radius: $border-radius;
+			border-bottom-left-radius: $border-radius;
+		}
+		&:last-child{
+			border-top-right-radius: $border-radius;
+			border-bottom-right-radius: $border-radius;
+			border-right: 1px solid #ddd;
+		}
+	}
+	&:after{
+		content: "";
+		display: block;
+		clear: both;
+	}
+}

@@ -1,0 +1,74 @@
+{% extends "admin/account/page.html" %}{% load i18n humanize %}
+{% block title %}
+    {% trans "Offer details" %}
+{% endblock title %}
+
+{% block toolbar %}
+    <a href="{% url 'crm-admin:category-update' object.id %}" 
+        class="[ toolbar__item ] [ btn btn--change btn--small pull-right ]">
+        <span class="fa fa-pencil"></span>
+        {% trans "Edit Category" %}
+    </a>
+    <span class="toolbar__title">{% trans "Category" %}</span>
+{% endblock toolbar %}
+
+{% block content %}
+<div class="[ content__inner ]">
+    <p class="breadcrumb">
+        <a href="{% url 'crm-admin:category-list' %}">{% trans "Category" %}</a>  
+        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
+        {% trans "Category details" %}
+    </p>
+</div>
+
+<div class="[ content__inner ] [ box box--padded box--bordered ]">
+    <fieldset>
+        <div class="grid">
+            <div class="grid__span-12">
+                <h3>{{object.name}}</h3>
+            </div>
+        </div>
+        <div class="content-inner">
+            <table class="table table--clickable">
+                <tr class="table-row">
+                    <th class="table-head-cell">{% trans "Name" %}</th>
+                    <th class="table-head-cell">{% trans "Company" %}</th>
+                    <th class="table-head-cell">{% trans "Categories" %}</th>
+                    <th class="table-head-cell"></th>
+                </tr>
+                {% for object in object.contacts %}
+                <tr class="table-row" 
+                    onClick="window.location = '{% url 'crm-admin:contact-detail' object.id %}'">
+                    <td class="table-cell">{{object}}</td>
+                    <td class="table-cell">{{object.company}}</td>
+                    <td class="table-cell">
+                        {{object.category.all|join:", "}}
+                        {% for c in object.category.all %}
+                            {{c.name}}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="table-cell">
+                        <a href="{% url 'crm-admin:contact-detail' object.id %}">
+                            {% trans "Update" %}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </fieldset>
+</div>
+
+<div class="content__inner">
+    {% if perms.crm.delete_category %}
+    <a href="{% url 'crm-admin:category-delete' object.id %}" class="btn btn--delete btn--transparent pull-right">
+        {% trans "Delete Category" %}
+    </a>
+    {% endif %}
+    {% if perms.crm.change_category %}
+    <a href="{% url 'crm-admin:category-update' object.id %}" class="btn btn--change">
+        {% trans "Edit Category" %}
+    </a>
+    {% endif %}
+</div>      
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% load i18n %}
+<div class="menu__section-header">
+    {% trans "CRM" %}
+</div>
+{% if perms.crm.change_contact %}
+<a href="{% url 'crm-admin:contact-list' %}" class="[ menu__item ] [ menu-item ]">
+    <span class="menu-item__icon fa fa-users"></span>
+    <span class="menu-item__text">{% trans "Contacts" %}</span>
+</a>
+{% endif %}
