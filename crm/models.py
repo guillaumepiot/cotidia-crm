@@ -91,10 +91,16 @@ class Contact(models.Model):
         ordering = ('first_name', 'last_name')
 
     def __unicode__(self):
-        return u'%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
+        if self.title:
+            return u'%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
+        else:
+            return u'%s %s' % (self.first_name, self.last_name)
 
     def __str__(self):
-        return '%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
+        if self.title:
+            return '%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
+        else:
+            return u'%s %s' % (self.first_name, self.last_name)
 
     @property
     def title_verbal(self):

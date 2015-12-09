@@ -38,9 +38,9 @@ loadMap = ->
             draggable: true
         })
 
-        contentHtml = "<div style=\"width:300px; height:150px;\">"
+        contentHtml = "<div>"
         
-        contentHtml += "<h3>#{contactTitle}</h3>#{contactAddress}</div>"
+        contentHtml += "<span class=\"text-strong\">#{contactTitle}</span><br>#{contactAddress}</div>"
 
         infowindow = new google.maps.InfoWindow({
             content: contentHtml

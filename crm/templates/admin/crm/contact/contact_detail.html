@@ -82,51 +82,23 @@
         </div>
     </div>
 </div>
-<div class="[ content__inner ] [ box box--padded box--bordered ]">
-    <div class="grid">
-        <div class="grid__span-6">
-            <p>
-            <span class="attribute-label">{% trans "Address" %}</span><br>
-            {% if object.first_line %}
-                {{object.first_line}}<br/>
-            {% endif %}
-            {% if object.second_line %}
-                {{object.second_line}}<br/>
-            {% endif %}
-            {% if object.city %}
-                {{object.city}}<br/>
-            {% endif %}
-            {% if object.county %}
-                {{object.county}}<br/>
-            {% endif %}
-            {% if object.postcode %}
-                {{object.postcode}}<br/>
-            {% endif %}
-            {% if object.country %}
-                {{object.country_verbal}}<br/>
-            {% endif %}
-            </p>
-        </div>  
-        <div class="grid__span-6">
-            <div class="content-inner">
-                <input type="hidden" value="{{object.first_name}}" id="id_first_name"/>
-                <input type="hidden" value="{{object.last_name}}" id="id_last_name"/>
-                <input type="hidden" value="{{object.first_line}}" id="id_first_line"/>
-                <input type="hidden" value="{{object.second_line}}" id="id_second_line"/>
-                <input type="hidden" value="{{object.county}}" id="id_county"/>
-                <input type="hidden" value="{{object.city}}" id="id_city"/>
-                <input type="hidden" value="{{object.postcode}}" id="id_postcode"/>
-                <input type="hidden" value="{{object.country}}" id="id_country"/>
-                <input id="id_lat" name="lat" type="hidden" value="{{object.lat}}">
-                <input id="id_lng" name="lng" type="hidden" value="{{object.lng}}">
-                <div id="contact-form-map"></div>
-            </div>
-        </div>
-    </div>
-</div>     
+   
 
 <div class="grid grid--collapse">
     <div class="grid__span-6">
+
+        <div class="[ content__inner ] [ box box--padded box--bordered ]">
+            <p>
+                <span class="attribute-label">{% trans "Actions" %}</span><br>
+            </p>
+            <p>
+                <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
+                    class="btn btn--create btn--small">
+                    {% trans "Add a new action" %}
+                </a>
+            </p>
+        </div>
+
         <div class="[ content__inner ] [ box box--padded box--bordered ]">
             <p>
             <span class="attribute-label">{% trans "Notes" %}</span><br>
@@ -168,13 +140,45 @@
     <div class="grid__span-6">
         <div class="[ content__inner ] [ box box--padded box--bordered ]">
             <p>
-                <span class="attribute-label">{% trans "Actions" %}</span><br>
+            <span class="attribute-label">{% trans "Address" %}</span><br>
+            {% if object.first_line %}
+                {{object.first_line}}<br/>
+            {% endif %}
+            {% if object.second_line %}
+                {{object.second_line}}<br/>
+            {% endif %}
+            {% if object.city %}
+                {{object.city}}<br/>
+            {% endif %}
+            {% if object.county %}
+                {{object.county}}<br/>
+            {% endif %}
+            {% if object.postcode %}
+                {{object.postcode}}<br/>
+            {% endif %}
+            {% if object.country %}
+                {{object.country_verbal}}<br/>
+            {% endif %}
             </p>
+            <div class="content-inner">
+                {% if object.lat and object.lng %}
+                <input type="hidden" value="{{object.first_name}}" id="id_first_name"/>
+                <input type="hidden" value="{{object.last_name}}" id="id_last_name"/>
+                <input type="hidden" value="{{object.first_line}}" id="id_first_line"/>
+                <input type="hidden" value="{{object.second_line}}" id="id_second_line"/>
+                <input type="hidden" value="{{object.county}}" id="id_county"/>
+                <input type="hidden" value="{{object.city}}" id="id_city"/>
+                <input type="hidden" value="{{object.postcode}}" id="id_postcode"/>
+                <input type="hidden" value="{{object.country}}" id="id_country"/>
+                <input id="id_lat" name="lat" type="hidden" value="{{object.lat}}">
+                <input id="id_lng" name="lng" type="hidden" value="{{object.lng}}">
+                <div id="contact-form-map"></div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="[ content__inner ] [ box box--padded box--bordered ]">
             <p>
-                <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
-                    class="btn btn--create btn--small">
-                    {% trans "Add a new action" %}
-                </a>
+            <span class="attribute-label">{% trans "Social Media" %}</span><br>
             </p>
         </div>
     </div>
