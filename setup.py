@@ -15,7 +15,6 @@ CLASSIFIERS = [
 
 install_requires = [
     'names',
-    '-e git+https://guillaumepiot@bitbucket.org/guillaumepiot/cotimail.git#egg=cotimail',
 ]
 
 # taken from django-registration
