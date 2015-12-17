@@ -60,14 +60,11 @@ loadMap = (map_id, drag)->
 
 get_address = ->
     address_first_line = document.getElementById('id_first_line').value
-    address_second_line = document.getElementById('id_second_line').value
     address_area = document.getElementById('id_county').value
     address_postcode = document.getElementById('id_postcode').value
     city = document.getElementById('id_city').value
 
     contactAddress = "#{address_first_line}"
-    if address_second_line
-        contactAddress += ", #{address_second_line}"
     if city
         contactAddress += ", #{city}"
     if address_postcode
