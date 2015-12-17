@@ -1,11 +1,11 @@
 #
 # Load the location map
 #
-loadMap = ->
+loadMap = (map_id, drag)->
 
     updateLatLon = (pos)->
-        document.getElementById('id_lat').value = pos.lat()
-        document.getElementById('id_lng').value = pos.lng()
+        document.getElementById('id_lat').value = pos.lat().toFixed(15)
+        document.getElementById('id_lng').value = pos.lng().toFixed(15)
 
     #
     # Retrieve the coordinates from the form fields
@@ -28,14 +28,14 @@ loadMap = ->
     if lat and lng
         mapOptions.center = new google.maps.LatLng(lat, lng)
 
-    map = new google.maps.Map(document.getElementById("contact-form-map"), mapOptions)
+    map = new google.maps.Map(document.getElementById(map_id), mapOptions)
 
     if lat and lng
 
         marker = new google.maps.Marker({
             map: map
             position: mapOptions.center
-            draggable: true
+            draggable: drag
         })
 
         contentHtml = "<div>"
@@ -53,9 +53,10 @@ loadMap = ->
         marker.locid = 1;
         marker.infowindow = infowindow;
 
-        google.maps.event.addListener(marker, 'dragend', ()->
-            updateLatLon(marker.getPosition())
-        )
+        if drag
+            google.maps.event.addListener(marker, 'dragend', ()->
+                updateLatLon(marker.getPosition())
+            )
 
 get_address = ->
     address_first_line = document.getElementById('id_first_line').value
@@ -136,7 +137,10 @@ if document.getElementById('calculate_distance')
 
 
 if document.getElementById('contact-form-map')
-    loadMap()
+    loadMap('contact-form-map', true)
+
+if document.getElementById('contact-view-map')
+    loadMap('contact-view-map', false)
 
 if document.getElementById('contact-form-geolocate')
 

@@ -72,7 +72,7 @@
     color: $grey--medium;
 }
 
-#contact-form-map{
+#contact-form-map, #contact-view-map{
     width: 100%;
     height: 312px;
 }
@@ -107,6 +107,36 @@ trix-toolbar{
     &:hover{
         .note__edit{
             display: inline;
+        }
+    }
+}
+
+.date-select{
+    display: inline-block;
+    margin-right: calc-em($horizontal_padding);
+    .form__control{
+        display: inline-block;
+        [name$=_day]{
+            width: 80px;
+        }
+        [name$=_month]{
+            width: 160px;
+        }
+        [name$=_year]{
+            width: 80px;
+        }
+    }
+}
+
+.time-select{
+    display: inline-block;
+    .form__control{
+        display: inline-block;
+        [name$=_hour]{
+            width: 90px;
+        }
+        [name$=_minute]{
+            width: 90px;
         }
     }
 }

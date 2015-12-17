@@ -5,6 +5,7 @@
     <th class="table-head-cell">{% trans "Contact number" %}</th>
     <th class="table-head-cell">{% trans "Company" %}</th>
     <th class="table-head-cell">{% trans "Categories" %}</th>
+    <th class="table-head-cell">{% trans "Actions" %}</th>
 </tr>
 {% for object in object_list %}
 <tr class="table-row" 
@@ -29,6 +30,11 @@
     </td>
     <td class="table-cell">
         {{object.category.all|join:", "}}
+    </td>
+    <td class="table-cell">
+        {% if object.actions %}
+            <span class="label">{{object.actions.count}}</span>
+        {% endif %}
     </td>
 </tr>
 {% empty %}

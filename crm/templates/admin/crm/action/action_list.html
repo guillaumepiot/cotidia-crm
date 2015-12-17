@@ -1,0 +1,57 @@
+{% extends "admin/account/page.html" %}{% load i18n %}
+{% block title %}
+    {% trans "Actions" %}
+{% endblock title %}
+
+{% block toolbar %}
+    {% if perms.crm.add_action %}
+    <a href="{% url 'crm-admin:action-add' %}"
+        class="[ toolbar__item ] [ btn btn--create btn--small pull-right ]">
+        <span class="fa fa-plus"></span> {% trans "Add an Action" %}
+    </a>
+    {% endif %}
+    <span class="toolbar__title">{% trans "Action" %}</span>
+{% endblock toolbar %}
+
+{% block content %}
+<div class="grid grid--collapse">
+    <div class="grid__span-12">
+        <div class="content__inner">
+            <table class="table table--clickable">
+                <tr class="table-row">
+                    <th class="table-head-cell">{% trans "Title" %}</th>
+                    <th class="table-head-cell">{% trans "Due Date & Time" %}</th>
+                    <th class="table-head-cell">{% trans "Completed" %}</th>
+                    <th class="table-head-cell">{% trans "Contact" %}</th>
+                </tr>
+                {% for object in object_list %}
+                <tr class="table-row{% if object.overdue %} table-row--red{% endif %}" 
+                    onClick="window.location = '{% url 'crm-admin:action-detail' object.id %}'">
+                    <td class="table-cell">{{object.title}}</td>
+                    <td class="table-cell">
+                    {{object.due_date|date:"d F Y"}} 
+                    {% if object.due_time %}
+                        - {{object.due_time|date:"g:i A"}}
+                    {% endif %}
+                    </td>
+                    <td class="table-cell">
+                        {% if object.completed %}
+                            <span class="fa fa-check fa-green"></span>
+                        {% else %}
+                            <span class="fa fa-remove fa-red"></span>
+                        {% endif %}
+                    </td>
+                    <td class="table-cell">
+                        {% if object.contact %}
+                            <a href="{% url 'crm-admin:contact-detail' object.contact.id %}">
+                                {{object.contact}}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

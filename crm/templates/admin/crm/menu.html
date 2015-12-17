@@ -2,6 +2,12 @@
 <div class="menu__section-header">
     {% trans "CRM" %}
 </div>
+{% if perms.crm.change_action %}
+<a href="{% url 'crm-admin:action-list' %}" class="[ menu__item ] [ menu-item ]">
+    <span class="menu-item__icon fa fa-check-square"></span>
+    <span class="menu-item__text">{% trans "Actions" %}</span>
+</a>
+{% endif %}
 {% if perms.crm.change_contact %}
 <a href="{% url 'crm-admin:contact-list' %}" class="[ menu__item ] [ menu-item ]">
     <span class="menu-item__icon fa fa-users"></span>

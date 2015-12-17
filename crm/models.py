@@ -1,5 +1,7 @@
+import datetime
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 from crm import settings as crm_settings 
 
@@ -124,6 +126,9 @@ class Contact(models.Model):
     def notes(self):
         return Note.objects.filter(contact=self)
 
+    def actions(self):
+        return Action.objects.filter(contact=self)
+
 class Note(models.Model):
     comment = models.TextField(max_length=3000)
     contact = models.ForeignKey('crm.Contact', blank=True, null=True)
@@ -142,3 +147,35 @@ class Note(models.Model):
 
     def __str__(self):
         return '%s' % (self.comment)
+
+class Action(models.Model):
+    title = models.CharField(max_length=250)
+    description = models.TextField(max_length=3000, blank=True, null=True)
+    due_date = models.DateField(default=timezone.now())
+    due_time = models.TimeField(blank=True, null=True)
+    completed = models.BooleanField(default=0)
+    contact = models.ForeignKey('crm.Contact', blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
+        blank=True, null=True, related_name="action_created")
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
+        blank=True, null=True, related_name="action_modified")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-due_date']
+
+    def __unicode__(self):
+        return u'%s' % (self.title)
+
+    def __str__(self):
+        return '%s' % (self.title)
+
+    def overdue(self):
+        if self.completed:
+            return False
+        now = timezone.now()
+        today = datetime.date(now.year, now.month, now.day)
+        if today > self.due_date:
+            return True
+        return False

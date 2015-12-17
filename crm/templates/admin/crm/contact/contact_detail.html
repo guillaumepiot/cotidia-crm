@@ -91,8 +91,43 @@
             <p>
                 <span class="attribute-label">{% trans "Actions" %}</span><br>
             </p>
+            {% for action in contact.actions %}
+                <div class="note">
+                    <span class="label pull-right{% if action.overdue %} label--danger{% elif action.completed %} label--primary{% endif %}">
+                    {% if action.overdue %}
+                        <span class="fa fa-exclamation-circle"></span>
+                    {% elif action.completed %}
+                        <span class="fa fa-check"></span>
+                    {% else %}
+                        <span class="fa fa-clock-o"></span>
+                    {% endif %}
+                    {{action.due_date|date:"d F Y"}} 
+                    {% if action.due_time %}
+                        - {{action.due_time|date:"g:i A"}}
+                    {% endif %}
+                    </span>
+                    <span class="text-strong">{{action.title|safe}}</span>
+                    <br>
+                    {{action.description|safe}}
+                    <div class="note__log">
+                        {% if action.modified_by %}
+                            {% trans "Modified by" %}
+                            {{action.modified_by}} - {{action.date_modified}}
+                        {% else %}
+                            {% trans "Created by" %}
+                            {{action.created_by}} - {{action.date_created}}
+                        {% endif %}
+                        <a href="{% url 'crm-admin:action-update' action.id %}"
+                            class="note__edit">
+                            {% trans "edit" %}
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>{% trans "No actions have been created." %}</p>
+            {% endfor %}
             <p>
-                <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
+                <a href="{% url 'crm-admin:action-add' %}?contact={{object.id}}"
                     class="btn btn--create btn--small">
                     {% trans "Add a new action" %}
                 </a>
@@ -121,20 +156,14 @@
                     </div>
                 </div>
             {% empty %}
-                <p>{% trans "No notes have been written." %}
-                    <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}">
-                        {% trans "Write the first note" %}
-                    </a>
-                </p>
+                <p>{% trans "No notes have been written." %}</p>
             {% endfor %}
-            {% if contact.notes %}
-                <p>
-                    <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
-                        class="btn btn--create btn--small">
-                        {% trans "Add a new note" %}
-                    </a>
-                </p>
-            {% endif %}
+            <p>
+                <a href="{% url 'crm-admin:note-add' %}?contact={{object.id}}"
+                    class="btn btn--create btn--small">
+                    {% trans "Add a new note" %}
+                </a>
+            </p>
         </div> 
     </div>  
     <div class="grid__span-6">
@@ -172,7 +201,7 @@
                 <input type="hidden" value="{{object.country}}" id="id_country"/>
                 <input id="id_lat" name="lat" type="hidden" value="{{object.lat}}">
                 <input id="id_lng" name="lng" type="hidden" value="{{object.lng}}">
-                <div id="contact-form-map"></div>
+                <div id="contact-view-map"></div>
                 {% endif %}
             </div>
         </div>
