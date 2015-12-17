@@ -75,15 +75,14 @@ get_address = ->
     
     return contactAddress
 
-geolocateAddress = (address)->
-    
+geolocateAddress = (map_id, drag, address)->
     geocoder = new google.maps.Geocoder()
     
     geocoder.geocode( { 'address': address }, (results, status)->
         if status == google.maps.GeocoderStatus.OK
             document.getElementById('id_lat').value = results[0].geometry.location.lat().toFixed(15)
             document.getElementById('id_lng').value = results[0].geometry.location.lng().toFixed(15)
-            loadMap()
+            loadMap(map_id)
         else
             alert("Geocode was not successful for the following reason: " + status)
     )
@@ -147,6 +146,6 @@ if document.getElementById('contact-form-geolocate')
     elm = document.getElementById('contact-form-geolocate')
     elm.addEventListener('click', (e)->
         e.preventDefault()
-        geolocateAddress(get_address())
+        geolocateAddress('contact-form-map', true, get_address())
     )
 
