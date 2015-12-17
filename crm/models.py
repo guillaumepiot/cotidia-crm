@@ -151,7 +151,7 @@ class Note(models.Model):
 class Action(models.Model):
     title = models.CharField(max_length=250)
     description = models.TextField(max_length=3000, blank=True, null=True)
-    due_date = models.DateField(default=timezone.now())
+    due_date = models.DateField()
     due_time = models.TimeField(blank=True, null=True)
     completed = models.BooleanField(default=0)
     contact = models.ForeignKey('crm.Contact', blank=True, null=True)

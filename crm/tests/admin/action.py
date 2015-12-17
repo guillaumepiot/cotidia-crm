@@ -1,8 +1,9 @@
+import datetime
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
 from account.models import User
-from crm.models import Action
+from crm.models import Action, Contact
 
 class ActionTests(TestCase):
 
@@ -24,8 +25,20 @@ class ActionTests(TestCase):
         self.user.save()
 
         # Create a default object, to use with update, retrieve, list & delete
+        self.contact = Contact.objects.create(
+            title="mr",
+            first_name="Guillaume",
+            last_name="Piot",
+            )
+
+        # Create a default object, to use with update, retrieve, list & delete
         self.object = Action.objects.create(
-            attr="test"
+            title="Action title",
+            description="Action description",
+            due_date=datetime.datetime.today(),
+            due_time=datetime.time(),
+            completed=False,
+            contact=self.contact
             )
 
         # Create the client and login the user
@@ -43,17 +56,35 @@ class ActionTests(TestCase):
         response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
+        today = datetime.datetime.today()
+        today = datetime.date(today.year, today.month, today.day)
+        now = datetime.time()
+
         # Send data
         data = {
-            'attr': 'value'
+            'title': "Action title",
+            'description': "Action description",
+            'due_date_day': today.day,
+            'due_date_month': today.month,
+            'due_date_year': today.year,
+            'due_time_hour': now.hour,
+            'due_time_minute': now.minute,
+            'completed': True,
+            'contact': self.contact.id
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
+
         # Get the latest added object
         obj = Action.objects.filter().latest('id')
-        self.assertEqual(obj.attr, 'value')
-
+        self.assertEqual(obj.title, "Action title")
+        self.assertEqual(obj.description, "Action description")
+        self.assertEqual(obj.due_date, today)
+        self.assertEqual(obj.due_time, now)
+        self.assertEqual(obj.completed, True)
+        self.assertEqual(obj.contact, self.contact)
+        
 
     def test_update_action(self):
         """
@@ -70,16 +101,28 @@ class ActionTests(TestCase):
         response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
+        today = datetime.datetime.today()
+        today = datetime.date(today.year, today.month, today.day)
+        now = datetime.time()
+
         # Send data
         data = {
-            'attr': 'other value'
+            'title': 'Other title',
+            'description': "Action description",
+            'due_date_day': today.day,
+            'due_date_month': today.month,
+            'due_date_year': today.year,
+            'due_time_hour': now.hour,
+            'due_time_minute': now.minute,
+            'completed': True,
+            'contact': self.contact.id
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
         # Get the latest added object
         obj = Action.objects.get(id=self.object.id)
-        self.assertEqual(obj.attr, 'other value')
+        self.assertEqual(obj.title, 'Other title')
 
     def test_retrieve_action(self):
         """
