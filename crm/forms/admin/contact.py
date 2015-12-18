@@ -70,6 +70,14 @@ class ContactAddForm(forms.ModelForm):
         widget=forms.Select(attrs={'class':'form__select'}),
         required=False
         )
+
+    job = forms.CharField(
+        label='', 
+        max_length=100, 
+        widget=forms.TextInput(
+            attrs={'class':'form__text'}),
+        required=False
+        )
         
     category = forms.ModelMultipleChoiceField(
         label='',

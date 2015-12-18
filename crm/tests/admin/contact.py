@@ -50,6 +50,7 @@ class ContactTests(TestCase):
             'title': "mr",
             'first_name': "Guillaume",
             'last_name': "Piot",
+            'job': "Director",
         }
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
@@ -59,6 +60,7 @@ class ContactTests(TestCase):
         self.assertEqual(obj.title, 'mr')
         self.assertEqual(obj.first_name, 'Guillaume')
         self.assertEqual(obj.last_name, 'Piot')
+        self.assertEqual(obj.job, 'Director')
 
 
     def test_update_contact(self):

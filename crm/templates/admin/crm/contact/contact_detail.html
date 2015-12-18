@@ -71,6 +71,12 @@
                 {% endif %}
                 
             </p>
+            {% if object.job %}
+            <p>
+                <span class="attribute-label">{% trans "Job Position" %}</span><br>
+                {{object.job}}                
+            </p>
+            {% endif %}
             <p>
                 <span class="attribute-label">{% trans "Categories" %}</span><br>
                 {% for c in object.category.all %}

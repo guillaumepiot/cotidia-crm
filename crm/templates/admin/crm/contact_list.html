@@ -40,21 +40,21 @@
 {% empty %}
 {% if first_letter %}
     <tr class="table-row">
-        <td colspan="5" class="table-cell">
+        <td colspan="6" class="table-cell">
             {% trans "We found no contacts starting with:" %} {{first_letter}}
             - <a href="?">{% trans "Reset" %}</a>
         </td>
     </tr>
 {% elif search_query %}
     <tr class="table-row">
-        <td colspan="5" class="table-cell">
+        <td colspan="6" class="table-cell">
             {% trans "We found no contacts matching your query:" %} {{search_query}}
             - <a href="?">{% trans "Reset" %}</a>
         </td>
     </tr>
 {% else %}
     <tr class="table-row">
-        <td colspan="5" class="table-cell">
+        <td colspan="6" class="table-cell">
             {% trans "There are no contacts in the database" %}
             - <a href="{% url 'crm-admin:contact-add' %}">{% trans "Add the first contact" %}</a>
         </td>
