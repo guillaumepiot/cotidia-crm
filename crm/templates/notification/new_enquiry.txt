@@ -1,0 +1,11 @@
+New enquiry
+            
+CONTACT DETAILS
+{{full_name}}
+{{email}}
+
+MESSAGE
+{{message}}
+
+View inquiry online
+{{SITE_URL}}{{enquiry_url}}

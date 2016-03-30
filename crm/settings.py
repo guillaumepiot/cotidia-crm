@@ -1,4 +1,11 @@
 from django.utils.translation import ugettext_lazy as trans
+from django.conf import settings
+
+ENABLE_ACTION = getattr(settings, 'ENABLE_ACTION', True)
+ENABLE_CONTACT = getattr(settings, 'ENABLE_CONTACT', True)
+ENABLE_ENQUIRY = getattr(settings, 'ENABLE_ENQUIRY', True)
+
+ENQUIRY_RECIPIENTS = getattr(settings, 'ENQUIRY_RECIPIENTS', ["support@cotidia.com"])
 
 TITLE = (
     ('','---'),

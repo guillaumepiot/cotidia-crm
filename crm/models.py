@@ -179,3 +179,20 @@ class Action(models.Model):
         if today > self.due_date:
             return True
         return False
+
+class Enquiry(models.Model):
+    full_name = models.CharField(max_length=50, null=True)
+    email = models.EmailField(null=True)
+    message = models.TextField(max_length=500)
+
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-date_created']
+
+    def __unicode__(self):
+        return u'%s' % (self.full_name)
+
+    def __str__(self):
+        return '%s' % (self.full_name)

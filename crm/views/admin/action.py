@@ -14,9 +14,9 @@ from crm.forms.admin.action import (
     ActionUpdateForm)
 
 
-####################
+#####################
 # Action management #
-####################
+#####################
 
 class ActionList(StaffPermissionRequiredMixin, ListView):
     model = Action
