@@ -3,7 +3,7 @@ Cotidia CRM
 
 A CRM that integrates with the Cotidia admin.
 
-    $ pip install -e git+git@gitlab.com:cotidia/crm.git#egg=crm
+    $ pip install -e git+git@code.cotidia.com:cotidia/crm.git#egg=crm
 
 ## Setup
 
