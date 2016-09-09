@@ -9,11 +9,8 @@ from crm import settings as crm_settings
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
-    def __unicode__(self):
-        return u'%s' % (self.name)
-
     def __str__(self):
-        return u'%s' % (self.name)
+        return self.name
 
     def contacts(self):
         return Contact.objects.filter(category=self)\
@@ -25,9 +22,6 @@ class Category(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return u'%s' % (self.name)
 
     def __str__(self):
         return self.name
@@ -156,11 +150,8 @@ class Note(models.Model):
     class Meta:
         ordering = ['date_created']
 
-    def __unicode__(self):
-        return u'%s' % (self.comment)
-
     def __str__(self):
-        return '%s' % (self.comment)
+        return self.comment
 
 
 class Action(models.Model):
@@ -188,11 +179,8 @@ class Action(models.Model):
     class Meta:
         ordering = ['-due_date']
 
-    def __unicode__(self):
-        return u'%s' % (self.title)
-
     def __str__(self):
-        return '%s' % (self.title)
+        return self.title
 
     def overdue(self):
         if self.completed:
@@ -215,8 +203,5 @@ class Enquiry(models.Model):
     class Meta:
         ordering = ['-date_created']
 
-    def __unicode__(self):
-        return u'%s' % (self.full_name)
-
     def __str__(self):
-        return '%s' % (self.full_name)
+        return self.full_name
