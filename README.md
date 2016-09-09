@@ -19,12 +19,6 @@ INSTALLED_APPS = [
 ]
 ```
 
-Run the migration:
-
-```console
-$ python manage.py migrate
-```
-
 Include in the context processors:
 
 ```python
@@ -54,6 +48,12 @@ urlpatterns = [
         namespace="crm-admin")),
     ...
 ]
+```
+
+Run the migration:
+
+```console
+$ python manage.py migrate
 ```
 
 ## Commands
