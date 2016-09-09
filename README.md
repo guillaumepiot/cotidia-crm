@@ -7,7 +7,17 @@ A CRM that integrates with the Cotidia admin.
 
 ## Setup
 
-Add `crm` to your settings `INSTALLED_APPS`.
+Add `crm` and `django.contrib.humanize` to your settings `INSTALLED_APPS`.
+
+```python
+INSTALLED_APPS = [
+    ...
+    'django.contrib.humanize',
+
+    ...
+    'crm',
+]
+```
 
 Run the migration:
 
