@@ -7,27 +7,54 @@ A CRM that integrates with the Cotidia admin.
 
 ## Setup
 
-Add `crm` to your settings `INSTALLED_APPS`.
+Add `crm` and `django.contrib.humanize` to your settings `INSTALLED_APPS`.
 
-Run the migration:
+```python
+INSTALLED_APPS = [
+    ...
+    'django.contrib.humanize',
 
-    $ python manage.py migrate
+    ...
+    'crm',
+]
+```
 
 Include in the context processors:
 
-    TEMPLATES = [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    ...
-                    'crm.context_processor.crm_settings',
-                ],
-            },
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                ...
+                'crm.context_processor.crm_settings',
+            ],
         },
-    ]
+    },
+]
+```
+  
+Add the CRM urls:
+
+```python
+urlpatterns = [
+    ...
+    url(r'^api/crm/', include('crm.urls.api',
+        namespace="crm-api")),
+    url(r'^admin/crm/', include('crm.urls.admin',
+        namespace="crm-admin")),
+    ...
+]
+```
+
+Run the migration:
+
+```console
+$ python manage.py migrate
+```
 
 ## Commands
 
