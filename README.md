@@ -11,7 +11,9 @@ Add `crm` to your settings `INSTALLED_APPS`.
 
 Run the migration:
 
-    $ python manage.py migrate
+```console
+$ python manage.py migrate
+```
 
 Include in the context processors:
 
