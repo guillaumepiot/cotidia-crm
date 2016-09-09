@@ -4,16 +4,10 @@ from django.core.urlresolvers import reverse
 from account.models import User
 from crm.models import Note, Contact
 
+
 class NoteTests(TestCase):
 
     def setUp(self):
-        """
-        The set up function get executed before each test. Any non-testing data
-        used across all tests should be created here.
-        Eg:
-        self.default_data = {}
-        """
-
         # Create a super user
         self.user = User.objects.create(
             username="admin",
@@ -40,11 +34,10 @@ class NoteTests(TestCase):
         self.c.login(username=self.user.username, password='demo')
 
     def test_add_note(self):
-        """
-        Test that we can add a new object
-        """
+        """Test that we can add a new object."""
 
-        url = "%s?contact=%s" % (reverse('crm-admin:note-add'), self.contact.id)
+        url = "{0}?contact={1}".format(
+            reverse('crm-admin:note-add'), self.contact.id)
 
         # Test that the page load first
         response = self.c.get(url)
@@ -61,13 +54,11 @@ class NoteTests(TestCase):
         obj = Note.objects.filter().latest('id')
         self.assertEqual(obj.comment, 'value')
 
-
     def test_update_note(self):
-        """
-        Test that we can update an existing object
-        """
+        """Test that we can update an existing object."""
 
-        url = reverse('crm-admin:note-update', 
+        url = reverse(
+            'crm-admin:note-update',
             kwargs={
                 'pk': self.object.id
                 }
@@ -88,38 +79,11 @@ class NoteTests(TestCase):
         obj = Note.objects.get(id=self.object.id)
         self.assertEqual(obj.comment, 'other value')
 
-    # def test_retrieve_note(self):
-    #     """
-    #     Test that we can retrieve an object from its ID
-    #     """
-
-    #     url = reverse('crm-admin:note-detail', 
-    #         kwargs={
-    #             'pk': self.object.id
-    #             }
-    #         )
-
-    #     # Test that the page load first
-    #     response = self.c.get(url)
-    #     self.assertEqual(response.status_code, 200)
-
-    # def test_list_note(self):
-    #     """
-    #     Test that we can list objects
-    #     """
-
-    #     url = reverse('crm-admin:note-list')
-
-    #     # Test that the page load first
-    #     response = self.c.get(url)
-    #     self.assertEqual(response.status_code, 200)
-
     def test_delete_note(self):
-        """
-        Test that we can delete an object
-        """
+        """Test that we can delete an object."""
 
-        url = reverse('crm-admin:note-delete', 
+        url = reverse(
+            'crm-admin:note-delete',
             kwargs={
                 'pk': self.object.id
                 }

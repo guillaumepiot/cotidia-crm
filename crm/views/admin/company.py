@@ -1,10 +1,8 @@
-import json
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages 
-from django.conf import settings
+from django.contrib import messages
 
 from account.utils import StaffPermissionRequiredMixin
 from crm.models import Company
@@ -12,10 +10,6 @@ from crm.forms.admin.company import (
     CompanyAddForm,
     CompanyUpdateForm)
 
-
-####################
-# Company management #
-####################
 
 class CompanyList(StaffPermissionRequiredMixin, ListView):
     model = Company
@@ -25,10 +19,12 @@ class CompanyList(StaffPermissionRequiredMixin, ListView):
     def get_queryset(self):
         return Company.objects.filter()
 
+
 class CompanyDetail(StaffPermissionRequiredMixin, DetailView):
     model = Company
     template_name = 'admin/crm/company/company_detail.html'
     permission_required = 'crm.change_company'
+
 
 class CompanyCreate(StaffPermissionRequiredMixin, CreateView):
     model = Company
@@ -37,8 +33,11 @@ class CompanyCreate(StaffPermissionRequiredMixin, CreateView):
     permission_required = 'crm.add_company'
 
     def get_success_url(self):
-        messages.success(self.request, _('Company has been created.'))
-        return reverse('crm-admin:company-detail', kwargs={'pk':self.object.id})
+        messages.success(self.request, 'Company has been created.')
+        return reverse(
+            'crm-admin:company-detail',
+            kwargs={'pk': self.object.id})
+
 
 class CompanyUpdate(StaffPermissionRequiredMixin, UpdateView):
     model = Company
@@ -47,8 +46,11 @@ class CompanyUpdate(StaffPermissionRequiredMixin, UpdateView):
     permission_required = 'crm.change_company'
 
     def get_success_url(self):
-        messages.success(self.request, _('Company details have been updated.'))
-        return reverse('crm-admin:company-detail', kwargs={'pk':self.object.id})
+        messages.success(self.request, 'Company details have been updated.')
+        return reverse(
+            'crm-admin:company-detail',
+            kwargs={'pk': self.object.id})
+
 
 class CompanyDelete(StaffPermissionRequiredMixin, DeleteView):
     model = Company

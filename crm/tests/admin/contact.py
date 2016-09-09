@@ -4,16 +4,10 @@ from django.core.urlresolvers import reverse
 from account.models import User
 from crm.models import Contact
 
+
 class ContactTests(TestCase):
 
     def setUp(self):
-        """
-        The set up function get executed before each test. Any non-testing data
-        used across all tests should be created here.
-        Eg:
-        self.default_data = {}
-        """
-
         # Create a super user
         self.user = User.objects.create(
             username="admin",
@@ -35,9 +29,7 @@ class ContactTests(TestCase):
         self.c.login(username=self.user.username, password='demo')
 
     def test_add_contact(self):
-        """
-        Test that we can add a new object
-        """
+        """Test that we can add a new object."""
 
         url = reverse('crm-admin:contact-add')
 
@@ -62,13 +54,11 @@ class ContactTests(TestCase):
         self.assertEqual(obj.last_name, 'Piot')
         self.assertEqual(obj.job, 'Director')
 
-
     def test_update_contact(self):
-        """
-        Test that we can update an existing object
-        """
+        """Test that we can update an existing object."""
 
-        url = reverse('crm-admin:contact-update', 
+        url = reverse(
+            'crm-admin:contact-update',
             kwargs={
                 'pk': self.object.id
                 }
@@ -94,11 +84,10 @@ class ContactTests(TestCase):
         self.assertEqual(obj.last_name, 'Smith')
 
     def test_retrieve_contact(self):
-        """
-        Test that we can retrieve an object from its ID
-        """
+        """Test that we can retrieve an object from its ID."""
 
-        url = reverse('crm-admin:contact-detail', 
+        url = reverse(
+            'crm-admin:contact-detail',
             kwargs={
                 'pk': self.object.id
                 }
@@ -109,9 +98,7 @@ class ContactTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_list_contact(self):
-        """
-        Test that we can list objects
-        """
+        """Test that we can list objects."""
 
         url = reverse('crm-admin:contact-list')
 
@@ -120,11 +107,10 @@ class ContactTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_contact(self):
-        """
-        Test that we can delete an object
-        """
+        """Test that we can delete an object."""
 
-        url = reverse('crm-admin:contact-delete', 
+        url = reverse(
+            'crm-admin:contact-delete',
             kwargs={
                 'pk': self.object.id
                 }

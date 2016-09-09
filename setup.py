@@ -1,6 +1,5 @@
 import os
 from distutils.core import setup
-from setuptools import find_packages
 
 
 VERSION = __import__("crm").VERSION
@@ -28,7 +27,8 @@ if root_dir:
 for dirpath, dirnames, filenames in os.walk('crm'):
     # Ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
-        if dirname.startswith('.'): del dirnames[i]
+        if dirname.startswith('.'):
+            del dirnames[i]
     if '__init__.py' in filenames:
         pkg = dirpath.replace(os.path.sep, '.')
         if os.path.altsep:
@@ -36,14 +36,7 @@ for dirpath, dirnames, filenames in os.walk('crm'):
         packages.append(pkg)
     elif filenames:
 
-        ################################################################################
-        # !!! IMPORTANT !!!                                                            #
-        # To get the right prefix, enter the index key of the same                     #
-        # value as the length of your package folder name, including the slash.        #
-        # Eg: for 'crm/'' , key will be 4                                          #
-        ################################################################################
-
-        prefix = dirpath[4:] # Strip "crm/" or "crm\"
+        prefix = dirpath[4:]  # Strip "crm/" or "crm\"
         for f in filenames:
             data_files.append(os.path.join(prefix, f))
 

@@ -1,10 +1,8 @@
-import json
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages 
-from django.conf import settings
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
 from account.utils import StaffPermissionRequiredMixin
@@ -14,10 +12,6 @@ from crm.forms.admin.action import (
     ActionUpdateForm)
 
 
-#####################
-# Action management #
-#####################
-
 class ActionList(StaffPermissionRequiredMixin, ListView):
     model = Action
     template_name = 'admin/crm/action/action_list.html'
@@ -26,10 +20,12 @@ class ActionList(StaffPermissionRequiredMixin, ListView):
     def get_queryset(self):
         return Action.objects.filter()
 
+
 class ActionDetail(StaffPermissionRequiredMixin, DetailView):
     model = Action
     template_name = 'admin/crm/action/action_detail.html'
     permission_required = 'crm.change_action'
+
 
 class ActionCreate(StaffPermissionRequiredMixin, CreateView):
     model = Action
@@ -40,37 +36,43 @@ class ActionCreate(StaffPermissionRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         self.object = None
         if request.GET.get('contact'):
-            contact = get_object_or_404(Contact, id=self.request.GET.get('contact'))
+            get_object_or_404(
+                Contact, id=self.request.GET.get('contact'))
         return super(ActionCreate, self).get(request, *args, **kwargs)
 
     def get_success_url(self):
         messages.success(self.request, _('Action has been created.'))
         if self.request.GET.get('contact'):
-            return reverse('crm-admin:contact-detail', kwargs={'pk':self.request.GET.get('contact')})
+            return reverse(
+                'crm-admin:contact-detail',
+                kwargs={'pk': self.request.GET.get('contact')})
         else:
-            return reverse('crm-admin:action-detail', kwargs={'pk':self.object.id})
+            return reverse(
+                'crm-admin:action-detail',
+                kwargs={'pk': self.object.id})
 
     def get_context_data(self, **kwargs):
-        
+
         # Call the base implementation first to get a context
         context = super(ActionCreate, self).get_context_data(**kwargs)
         if self.request.GET.get('contact'):
-            context['contact'] = get_object_or_404(Contact, id=self.request.GET.get('contact'))
-        
+            context['contact'] = get_object_or_404(
+                Contact, id=self.request.GET.get('contact'))
+
         return context
 
     def form_valid(self, form):
-        """
-        If the form is valid, save the associated model.
-        """
+        """If the form is valid, save the associated model."""
         self.object = form.save(commit=False)
 
         if self.request.GET.get('contact'):
-            self.object.contact = get_object_or_404(Contact, id=self.request.GET.get('contact'))
-        
+            self.object.contact = get_object_or_404(
+                Contact, id=self.request.GET.get('contact'))
+
         self.object.created_by = self.request.user
 
         return super(ActionCreate, self).form_valid(form)
+
 
 class ActionUpdate(StaffPermissionRequiredMixin, UpdateView):
     model = Action
@@ -81,22 +83,24 @@ class ActionUpdate(StaffPermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, _('Action details have been updated.'))
         if self.object.contact:
-            return reverse('crm-admin:contact-detail', kwargs={'pk':self.object.contact.id})
+            return reverse(
+                'crm-admin:contact-detail',
+                kwargs={'pk': self.object.contact.id})
         else:
-            return reverse('crm-admin:action-detail', kwargs={'pk':self.object.id})
+            return reverse(
+                'crm-admin:action-detail',
+                kwargs={'pk': self.object.id})
 
     def get_context_data(self, **kwargs):
-        
+
         # Call the base implementation first to get a context
         context = super(ActionUpdate, self).get_context_data(**kwargs)
         context['contact'] = self.object.contact
-        
+
         return context
 
     def get_form_kwargs(self):
-        """
-        Returns the keyword arguments for instantiating the form.
-        """
+        """Return the keyword arguments for instantiating the form."""
         kwargs = super(ActionUpdate, self).get_form_kwargs()
         if hasattr(self, 'object'):
             kwargs.update({'instance': self.object})
@@ -104,13 +108,12 @@ class ActionUpdate(StaffPermissionRequiredMixin, UpdateView):
         return kwargs
 
     def form_valid(self, form):
-        """
-        If the form is valid, save the associated model.
-        """
+        """If the form is valid, save the associated model."""
         self.object = form.save(commit=False)
         self.object.modified_by = self.request.user
 
         return super(ActionUpdate, self).form_valid(form)
+
 
 class ActionDelete(StaffPermissionRequiredMixin, DeleteView):
     model = Action

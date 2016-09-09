@@ -1,6 +1,5 @@
-import os
-
 from crm import settings
+
 
 def crm_settings(request):
 

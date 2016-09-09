@@ -1,19 +1,12 @@
-import json
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages 
-from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 from account.utils import StaffPermissionRequiredMixin
 from crm.models import Enquiry
 
-
-######################
-# Enquiry management #
-######################
 
 class EnquiryList(StaffPermissionRequiredMixin, ListView):
     model = Enquiry
@@ -23,10 +16,12 @@ class EnquiryList(StaffPermissionRequiredMixin, ListView):
     def get_queryset(self):
         return Enquiry.objects.filter()
 
+
 class EnquiryDetail(StaffPermissionRequiredMixin, DetailView):
     model = Enquiry
     template_name = 'admin/crm/enquiry/enquiry_detail.html'
     permission_required = 'crm.change_enquiry'
+
 
 class EnquiryDelete(StaffPermissionRequiredMixin, DeleteView):
     model = Enquiry

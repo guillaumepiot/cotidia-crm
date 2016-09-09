@@ -3,29 +3,29 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-from crm import settings as crm_settings 
+from crm import settings as crm_settings
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    
+
     def __unicode__(self):
         return u'%s' % (self.name)
 
     def __str__(self):
-        return u'%s' % (self.name) 
+        return u'%s' % (self.name)
 
     def contacts(self):
         return Contact.objects.filter(category=self)\
             .order_by('company', 'first_name')
 
     class Meta:
-        ordering = [ 'name']
-        verbose_name= 'Category'
-        verbose_name_plural = 'Categories'
+        ordering = ['name']
+
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
-    
+
     def __unicode__(self):
         return u'%s' % (self.name)
 
@@ -36,16 +36,15 @@ class Company(models.Model):
         return Contact.objects.filter(company=self).order_by('first_name')
 
     class Meta:
-        ordering = [ 'name']
-        verbose_name= 'Company'
-        verbose_name_plural= 'Companies'
+        ordering = ['name']
+
 
 class Contact(models.Model):
 
     title = models.CharField(
-        max_length=10, 
-        choices=crm_settings.TITLE, 
-        blank=True, 
+        max_length=10,
+        choices=crm_settings.TITLE,
+        blank=True,
         null=True)
 
     first_name = models.CharField(max_length=50)
@@ -75,34 +74,40 @@ class Contact(models.Model):
     city = models.CharField(max_length=100, blank=True)
     county = models.CharField(max_length=100, blank=True)
     postcode = models.CharField(max_length=50, blank=True)
-    country = models.CharField(max_length=2, choices=crm_settings.COUNTRIES, blank=True)
-    lat = models.DecimalField(max_digits=18, decimal_places=15, blank=True, null=True)
-    lng = models.DecimalField(max_digits=18, decimal_places=15, blank=True, null=True)
+    country = models.CharField(
+        max_length=2, choices=crm_settings.COUNTRIES, blank=True)
+    lat = models.DecimalField(
+        max_digits=18, decimal_places=15, blank=True, null=True)
+    lng = models.DecimalField(
+        max_digits=18, decimal_places=15, blank=True, null=True)
 
     # Website
     website = models.URLField(max_length=150, blank=True)
 
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
-        blank=True, null=True, related_name="user_created_contact")
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
-        blank=True, null=True, related_name="user_modified_contact")
-    date_created = models.DateTimeField(auto_now_add=True) 
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="user_created_contact"
+        )
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="user_modified_contact"
+        )
+    date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('first_name', 'last_name')
 
-    def __unicode__(self):
-        if self.title:
-            return u'%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
-        else:
-            return u'%s %s' % (self.first_name, self.last_name)
-
     def __str__(self):
         if self.title:
-            return '%s %s %s' % (self.title_verbal, self.first_name, self.last_name)
+            return '{0} {1} {2}'.format(
+                self.title_verbal, self.first_name, self.last_name)
         else:
-            return u'%s %s' % (self.first_name, self.last_name)
+            return '{0} {1}'.format(self.first_name, self.last_name)
 
     @property
     def title_verbal(self):
@@ -129,13 +134,22 @@ class Contact(models.Model):
     def actions(self):
         return Action.objects.filter(contact=self)
 
+
 class Note(models.Model):
     comment = models.TextField(max_length=3000)
     contact = models.ForeignKey('crm.Contact', blank=True, null=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
-        blank=True, null=True, related_name="user_created")
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
-        blank=True, null=True, related_name="user_modified")
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="user_created"
+        )
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="user_modified"
+        )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -148,6 +162,7 @@ class Note(models.Model):
     def __str__(self):
         return '%s' % (self.comment)
 
+
 class Action(models.Model):
     title = models.CharField(max_length=250)
     description = models.TextField(max_length=3000, blank=True, null=True)
@@ -155,10 +170,18 @@ class Action(models.Model):
     due_time = models.TimeField(blank=True, null=True)
     completed = models.BooleanField(default=0)
     contact = models.ForeignKey('crm.Contact', blank=True, null=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
-        blank=True, null=True, related_name="action_created")
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, \
-        blank=True, null=True, related_name="action_modified")
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="action_created"
+        )
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="action_modified"
+        )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -179,6 +202,7 @@ class Action(models.Model):
         if today > self.due_date:
             return True
         return False
+
 
 class Enquiry(models.Model):
     full_name = models.CharField(max_length=50, null=True)

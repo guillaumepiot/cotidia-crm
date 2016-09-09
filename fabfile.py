@@ -18,10 +18,10 @@ def add_module():
         #
         if local("cd %s/tests" % env.app_name).failed:
             local("mkdir %s/tests"% env.app_name)
-            
+
         if local('echo "from .admin import *\nfrom .public import *" > %s/tests/__init__.py' % env.app_name).failed:
             local("touch %s/tests/__init__.py"% env.app_name)
-        
+
         if local("cd %s/tests/admin" % env.app_name).failed:
             local("mkdir %s/tests/admin"% env.app_name)
 
@@ -62,7 +62,7 @@ def add_module():
 
         local("sed -i .bak 's/Model./%s./g' %s/tests/admin/%s.py" % \
             (env.module_name, env.app_name, env.module_name.lower()))
-        
+
         local("rm %s/tests/admin/%s.py.bak" % (env.app_name, env.module_name.lower()))
 
         #
@@ -70,10 +70,10 @@ def add_module():
         #
         if local("cd %s/urls" % env.app_name).failed:
             local("mkdir %s/urls"% env.app_name)
-            
+
         if local("cat %s/urls/__init__.py" % env.app_name).failed:
             local("touch %s/urls/__init__.py"% env.app_name)
-        
+
         if local("cd %s/urls/admin" % env.app_name).failed:
             local("mkdir %s/urls/admin"% env.app_name)
 
@@ -125,10 +125,10 @@ def add_module():
         #
         if local("cd %s/views" % env.app_name).failed:
             local("mkdir %s/views"% env.app_name)
-            
+
         if local("cat %s/views/__init__.py" % env.app_name).failed:
             local("touch %s/views/__init__.py"% env.app_name)
-        
+
         if local("cd %s/views/admin" % env.app_name).failed:
             local("mkdir %s/views/admin"% env.app_name)
 
@@ -204,18 +204,18 @@ def add_module():
             (env.app_name, env.module_name.lower(), env.app_name, env.module_name.lower()))
         local("sed -i .bak 's/app.delete_model/%s.delete_%s/g' %s/views/admin/%s.py" % \
             (env.app_name, env.module_name.lower(), env.app_name, env.module_name.lower()))
-        
+
         local("rm %s/views/admin/%s.py.bak" % (env.app_name, env.module_name.lower()))
-            
+
         #
         # Add the Forms
         #
         if local("cd %s/forms" % env.app_name).failed:
             local("mkdir %s/forms"% env.app_name)
-            
+
         if local("cat %s/forms/__init__.py" % env.app_name).failed:
             local("touch %s/forms/__init__.py"% env.app_name)
-        
+
         if local("cd %s/forms/admin" % env.app_name).failed:
             local("mkdir %s/forms/admin"% env.app_name)
 
@@ -302,7 +302,7 @@ def add_module():
         if not exists("%s/templates/admin/%s/%s/%s_list.html" % (env.app_name, env.app_name, env.module_name.lower(), env.module_name.lower())):
             local('curl https://gist.githubusercontent.com/guillaumepiot/b264c44696663678dc89/raw/model_list.html > %s/templates/admin/%s/%s/%s_list.html' \
                 % (env.app_name, env.app_name, env.module_name.lower(), env.module_name.lower()))
-            
+
         local("sed -i .bak 's/trans \"Models\"/trans \"%s\"/g' %s/templates/admin/%s/%s/%s_list.html" % \
             (env.module_name, env.app_name, env.app_name, env.module_name.lower(), env.module_name.lower()))
 

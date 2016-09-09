@@ -5,16 +5,10 @@ from django.core.urlresolvers import reverse
 from account.models import User
 from crm.models import Action, Contact
 
+
 class ActionTests(TestCase):
 
     def setUp(self):
-        """
-        The set up function get executed before each test. Any non-testing data
-        used across all tests should be created here.
-        Eg:
-        self.default_data = {}
-        """
-
         # Create a super user
         self.user = User.objects.create(
             username="admin",
@@ -46,9 +40,7 @@ class ActionTests(TestCase):
         self.c.login(username=self.user.username, password='demo')
 
     def test_add_action(self):
-        """
-        Test that we can add a new object
-        """
+        """Test that we can add a new object."""
 
         url = reverse('crm-admin:action-add')
 
@@ -75,7 +67,6 @@ class ActionTests(TestCase):
         response = self.c.post(url, data)
         self.assertEqual(response.status_code, 302)
 
-
         # Get the latest added object
         obj = Action.objects.filter().latest('id')
         self.assertEqual(obj.title, "Action title")
@@ -84,14 +75,12 @@ class ActionTests(TestCase):
         self.assertEqual(obj.due_time, now)
         self.assertEqual(obj.completed, True)
         self.assertEqual(obj.contact, self.contact)
-        
 
     def test_update_action(self):
-        """
-        Test that we can update an existing object
-        """
+        """Test that we can update an existing object."""
 
-        url = reverse('crm-admin:action-update', 
+        url = reverse(
+            'crm-admin:action-update',
             kwargs={
                 'pk': self.object.id
                 }
@@ -125,11 +114,10 @@ class ActionTests(TestCase):
         self.assertEqual(obj.title, 'Other title')
 
     def test_retrieve_action(self):
-        """
-        Test that we can retrieve an object from its ID
-        """
+        """Test that we can retrieve an object from its ID."""
 
-        url = reverse('crm-admin:action-detail', 
+        url = reverse(
+            'crm-admin:action-detail',
             kwargs={
                 'pk': self.object.id
                 }
@@ -140,9 +128,7 @@ class ActionTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_list_action(self):
-        """
-        Test that we can list objects
-        """
+        """Test that we can list objects."""
 
         url = reverse('crm-admin:action-list')
 
@@ -151,11 +137,10 @@ class ActionTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_action(self):
-        """
-        Test that we can delete an object
-        """
+        """Test that we can delete an object."""
 
-        url = reverse('crm-admin:action-delete', 
+        url = reverse(
+            'crm-admin:action-delete',
             kwargs={
                 'pk': self.object.id
                 }

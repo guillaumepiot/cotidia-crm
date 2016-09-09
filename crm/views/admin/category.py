@@ -1,10 +1,8 @@
-import json
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages 
-from django.conf import settings
+from django.contrib import messages
 
 from account.utils import StaffPermissionRequiredMixin
 from crm.models import Category
@@ -12,10 +10,6 @@ from crm.forms.admin.category import (
     CategoryAddForm,
     CategoryUpdateForm)
 
-
-####################
-# Category management #
-####################
 
 class CategoryList(StaffPermissionRequiredMixin, ListView):
     model = Category
@@ -25,10 +19,12 @@ class CategoryList(StaffPermissionRequiredMixin, ListView):
     def get_queryset(self):
         return Category.objects.filter()
 
+
 class CategoryDetail(StaffPermissionRequiredMixin, DetailView):
     model = Category
     template_name = 'admin/crm/category/category_detail.html'
     permission_required = 'crm.change_category'
+
 
 class CategoryCreate(StaffPermissionRequiredMixin, CreateView):
     model = Category
@@ -37,8 +33,11 @@ class CategoryCreate(StaffPermissionRequiredMixin, CreateView):
     permission_required = 'crm.add_category'
 
     def get_success_url(self):
-        messages.success(self.request, _('Category has been created.'))
-        return reverse('crm-admin:category-detail', kwargs={'pk':self.object.id})
+        messages.success(self.request, 'Category has been created.')
+        return reverse(
+            'crm-admin:category-detail',
+            kwargs={'pk': self.object.id})
+
 
 class CategoryUpdate(StaffPermissionRequiredMixin, UpdateView):
     model = Category
@@ -47,8 +46,12 @@ class CategoryUpdate(StaffPermissionRequiredMixin, UpdateView):
     permission_required = 'crm.change_category'
 
     def get_success_url(self):
-        messages.success(self.request, _('Category details have been updated.'))
-        return reverse('crm-admin:category-detail', kwargs={'pk':self.object.id})
+        messages.success(self.request, 'Category details have been updated.')
+        return reverse(
+            'crm-admin:category-detail',
+            kwargs={'pk': self.object.id}
+            )
+
 
 class CategoryDelete(StaffPermissionRequiredMixin, DeleteView):
     model = Category

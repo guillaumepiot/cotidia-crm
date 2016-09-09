@@ -4,16 +4,10 @@ from django.core.urlresolvers import reverse
 from account.models import User
 from crm.models import Company
 
+
 class CompanyTests(TestCase):
 
     def setUp(self):
-        """
-        The set up function get executed before each test. Any non-testing data
-        used across all tests should be created here.
-        Eg:
-        self.default_data = {}
-        """
-
         # Create a super user
         self.user = User.objects.create(
             username="admin",
@@ -33,9 +27,7 @@ class CompanyTests(TestCase):
         self.c.login(username=self.user.username, password='demo')
 
     def test_add_company(self):
-        """
-        Test that we can add a new object
-        """
+        """Test that we can add a new object."""
 
         url = reverse('crm-admin:company-add')
 
@@ -54,13 +46,11 @@ class CompanyTests(TestCase):
         obj = Company.objects.filter().latest('id')
         self.assertEqual(obj.name, 'Test company')
 
-
     def test_update_company(self):
-        """
-        Test that we can update an existing object
-        """
+        """Test that we can update an existing object."""
 
-        url = reverse('crm-admin:company-update', 
+        url = reverse(
+            'crm-admin:company-update',
             kwargs={
                 'pk': self.object.id
                 }
@@ -82,11 +72,10 @@ class CompanyTests(TestCase):
         self.assertEqual(obj.name, 'Other company')
 
     def test_retrieve_company(self):
-        """
-        Test that we can retrieve an object from its ID
-        """
+        """Test that we can retrieve an object from its ID."""
 
-        url = reverse('crm-admin:company-detail', 
+        url = reverse(
+            'crm-admin:company-detail',
             kwargs={
                 'pk': self.object.id
                 }
@@ -97,9 +86,7 @@ class CompanyTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_list_company(self):
-        """
-        Test that we can list objects
-        """
+        """Test that we can list objects."""
 
         url = reverse('crm-admin:company-list')
 
@@ -108,11 +95,10 @@ class CompanyTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_company(self):
-        """
-        Test that we can delete an object
-        """
+        """Test that we can delete an object."""
 
-        url = reverse('crm-admin:company-delete', 
+        url = reverse(
+            'crm-admin:company-delete',
             kwargs={
                 'pk': self.object.id
                 }

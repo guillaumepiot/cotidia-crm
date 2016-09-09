@@ -4,16 +4,10 @@ from django.core.urlresolvers import reverse
 from account.models import User
 from crm.models import Category
 
+
 class CategoryTests(TestCase):
 
     def setUp(self):
-        """
-        The set up function get executed before each test. Any non-testing data
-        used across all tests should be created here.
-        Eg:
-        self.default_data = {}
-        """
-
         # Create a super user
         self.user = User.objects.create(
             username="admin",
@@ -33,9 +27,7 @@ class CategoryTests(TestCase):
         self.c.login(username=self.user.username, password='demo')
 
     def test_add_category(self):
-        """
-        Test that we can add a new object
-        """
+        """Test that we can add a new object."""
 
         url = reverse('crm-admin:category-add')
 
@@ -54,13 +46,11 @@ class CategoryTests(TestCase):
         obj = Category.objects.filter().latest('id')
         self.assertEqual(obj.name, 'Test category')
 
-
     def test_update_category(self):
-        """
-        Test that we can update an existing object
-        """
+        """Test that we can update an existing object."""
 
-        url = reverse('crm-admin:category-update', 
+        url = reverse(
+            'crm-admin:category-update',
             kwargs={
                 'pk': self.object.id
                 }
@@ -82,11 +72,10 @@ class CategoryTests(TestCase):
         self.assertEqual(obj.name, 'Other category')
 
     def test_retrieve_category(self):
-        """
-        Test that we can retrieve an object from its ID
-        """
+        """Test that we can retrieve an object from its ID."""
 
-        url = reverse('crm-admin:category-detail', 
+        url = reverse(
+            'crm-admin:category-detail',
             kwargs={
                 'pk': self.object.id
                 }
@@ -97,9 +86,7 @@ class CategoryTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_list_category(self):
-        """
-        Test that we can list objects
-        """
+        """Test that we can list objects."""
 
         url = reverse('crm-admin:category-list')
 
@@ -108,11 +95,10 @@ class CategoryTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_category(self):
-        """
-        Test that we can delete an object
-        """
+        """Test that we can delete an object."""
 
-        url = reverse('crm-admin:category-delete', 
+        url = reverse(
+            'crm-admin:category-delete',
             kwargs={
                 'pk': self.object.id
                 }

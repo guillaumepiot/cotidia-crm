@@ -1,31 +1,27 @@
-import os, datetime
-
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from django.core import mail
 
 from rest_framework import status
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 
-from crm.models import Enquiry
+from account.doc import Doc
 
-URLS = {
-    'send': 'crm-api:enquiry-send',
-}
 
 class EnquiryTests(APITestCase):
-    
+
     fixtures = []
 
+    URLS = {
+        'send': 'crm-api:enquiry-send',
+    }
+
     def setUp(self):
-        pass
+        self.doc = Doc()
 
     def test_send(self):
+        """Test if we can save an inquiry."""
 
-        """ Test if we can save an inquiry """
-   
-        url = reverse(URLS['send'])
+        url = reverse(self.URLS['send'])
 
         data = {
             'full_name': "John Crimson",
@@ -44,3 +40,13 @@ class EnquiryTests(APITestCase):
 
         # Test that the reply email is the one from the user
         self.assertEqual(mail.outbox[0].reply_to, ["john@crimson.com"])
+
+        # Generate documentation
+        content = {
+            'title': "Send enquiry",
+            'http_method': 'POST',
+            'url': url,
+            'payload': data,
+            'response': response.data,
+        }
+        self.doc.display_section(content)

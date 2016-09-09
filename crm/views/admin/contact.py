@@ -1,10 +1,8 @@
-import json
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages 
-from django.conf import settings
+from django.contrib import messages
 from django.db.models import Q
 
 from account.utils import StaffPermissionRequiredMixin
@@ -13,10 +11,6 @@ from crm.forms.admin.contact import (
     ContactAddForm,
     ContactUpdateForm)
 
-
-####################
-# Contact management #
-####################
 
 class ContactList(StaffPermissionRequiredMixin, ListView):
     model = Contact
@@ -35,7 +29,7 @@ class ContactList(StaffPermissionRequiredMixin, ListView):
 
         if first_letter:
             query = query.filter(first_name__startswith=first_letter)
-        
+
         if search_query:
             q_split = search_query.split(' ')
             for q in q_split:
@@ -45,8 +39,6 @@ class ContactList(StaffPermissionRequiredMixin, ListView):
                     Q(email__icontains=q) |
                     Q(company__name__icontains=q)
                     )
-
-
         return query
 
     def get_context_data(self, **kwargs):
@@ -62,10 +54,12 @@ class ContactList(StaffPermissionRequiredMixin, ListView):
         context['total'] = self.get_queryset().count()
         return context
 
+
 class ContactDetail(StaffPermissionRequiredMixin, DetailView):
     model = Contact
     template_name = 'admin/crm/contact/contact_detail.html'
     permission_required = 'crm.change_contact'
+
 
 class ContactCreate(StaffPermissionRequiredMixin, CreateView):
     model = Contact
@@ -75,16 +69,18 @@ class ContactCreate(StaffPermissionRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, _('Contact has been created.'))
-        return reverse('crm-admin:contact-detail', kwargs={'pk':self.object.id})
+        return reverse(
+            'crm-admin:contact-detail',
+            kwargs={'pk': self.object.id}
+            )
 
     def form_valid(self, form):
-        """
-        If the form is valid, save the associated model.
-        """
+        """If the form is valid, save the associated model."""
         self.object = form.save(commit=False)
         self.object.created_by = self.request.user
 
         return super(ContactCreate, self).form_valid(form)
+
 
 class ContactUpdate(StaffPermissionRequiredMixin, UpdateView):
     model = Contact
@@ -94,16 +90,18 @@ class ContactUpdate(StaffPermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, _('Contact details have been updated.'))
-        return reverse('crm-admin:contact-detail', kwargs={'pk':self.object.id})
+        return reverse(
+            'crm-admin:contact-detail',
+            kwargs={'pk': self.object.id}
+            )
 
     def form_valid(self, form):
-        """
-        If the form is valid, save the associated model.
-        """
+        """If the form is valid, save the associated model."""
         self.object = form.save(commit=False)
         self.object.modified_by = self.request.user
 
         return super(ContactUpdate, self).form_valid(form)
+
 
 class ContactDelete(StaffPermissionRequiredMixin, DeleteView):
     model = Contact
