@@ -15,20 +15,22 @@ Run the migration:
 
 Include in the context processors:
 
-    TEMPLATES = [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    ...
-                    'crm.context_processor.crm_settings',
-                ],
-            },
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                ...
+                'crm.context_processor.crm_settings',
+            ],
         },
-    ]
-    
+    },
+]
+```
+  
 Add the CRM urls:
 
 ```python
