@@ -28,6 +28,19 @@ Include in the context processors:
             },
         },
     ]
+    
+Add the CRM urls:
+
+```python
+urlpatterns = [
+    ...
+    url(r'^api/crm/', include('crm.urls.api',
+        namespace="crm-api")),
+    url(r'^admin/crm/', include('crm.urls.admin',
+        namespace="crm-admin")),
+    ...
+]
+```
 
 ## Commands
 
