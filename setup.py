@@ -1,5 +1,19 @@
+import os
+
 from setuptools import find_packages, setup
 
+
+def package_files(directory):
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        # Only keep the last directory of the path
+        path = path.replace(directory, directory.split("/")[-1])
+        for filename in filenames:
+            paths.append(os.path.join(path, filename))
+    return paths
+
+
+template_files = package_files('cotidia/crm/templates')
 
 setup(
     name="cotidia-crm",
@@ -11,17 +25,13 @@ setup(
     packages=find_packages(),
     package_dir={'crm': 'crm'},
     package_data={
-        'cotidia.cms': [
-            'templates/admin/crm/*.html',
-            'templates/admin/crm/*/*.html',
-            'templates/notification/*.html',
-            'templates/notification/*.txt'
-        ]
+        'cotidia.crm': template_files
     },
     namespace_packages=['cotidia'],
     include_package_data=True,
     install_requires=[
         'names',
+        'django-countries>=4.6.1',
     ],
     classifiers=[
         'Framework :: Django',

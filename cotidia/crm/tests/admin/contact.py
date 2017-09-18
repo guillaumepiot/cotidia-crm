@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
-from account.models import User
-from crm.models import Contact
+from cotidia.account.models import User
+from cotidia.crm.models import Contact
 
 
 class ContactTests(TestCase):
@@ -22,7 +22,7 @@ class ContactTests(TestCase):
             title="mr",
             first_name="Guillaume",
             last_name="Piot",
-            )
+        )
 
         # Create the client and login the user
         self.c = Client()
@@ -61,8 +61,8 @@ class ContactTests(TestCase):
             'crm-admin:contact-update',
             kwargs={
                 'pk': self.object.id
-                }
-            )
+            }
+        )
 
         # Test that the page load first
         response = self.c.get(url)
@@ -90,8 +90,8 @@ class ContactTests(TestCase):
             'crm-admin:contact-detail',
             kwargs={
                 'pk': self.object.id
-                }
-            )
+            }
+        )
 
         # Test that the page load first
         response = self.c.get(url)
@@ -113,8 +113,8 @@ class ContactTests(TestCase):
             'crm-admin:contact-delete',
             kwargs={
                 'pk': self.object.id
-                }
-            )
+            }
+        )
 
         # Test that the page load first
         response = self.c.get(url)

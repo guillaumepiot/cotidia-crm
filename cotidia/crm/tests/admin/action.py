@@ -2,8 +2,8 @@ import datetime
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
-from account.models import User
-from crm.models import Action, Contact
+from cotidia.account.models import User
+from cotidia.crm.models import Action, Contact
 
 
 class ActionTests(TestCase):

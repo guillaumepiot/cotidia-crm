@@ -1,14 +1,15 @@
 from rest_framework import serializers
 
-from cotidia.crm.models import Enquiry
 
+class EnquirySerializer(serializers.Serializer):
 
-class EnquirySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(label="Name")
+    email = serializers.EmailField(label="Email address")
+    message = serializers.CharField(label="Message")
 
     class Meta:
-        model = Enquiry
         fields = (
-            'full_name',
+            'name',
             'email',
-            'message'
-            )
+            'message',
+        )

@@ -2,8 +2,7 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-
-from cotidia.crm import settings as crm_settings
+from django_countries.fields import CountryField
 
 
 class Category(models.Model):
@@ -35,9 +34,21 @@ class Company(models.Model):
 
 class Contact(models.Model):
 
+    TITLE = (
+        ('', '---'),
+        ('mr', 'Mr'),
+        ('mrs', 'Mrs'),
+        ('ms', 'Ms'),
+        ('miss', 'Miss'),
+        ('dr', 'Dr'),
+        ('prof', 'Prof'),
+        ('rev', 'Rev'),
+        ('sir', 'Sir'),
+    )
+
     title = models.CharField(
         max_length=10,
-        choices=crm_settings.TITLE,
+        choices=TITLE,
         blank=True,
         null=True)
 
@@ -68,8 +79,7 @@ class Contact(models.Model):
     city = models.CharField(max_length=100, blank=True)
     county = models.CharField(max_length=100, blank=True)
     postcode = models.CharField(max_length=50, blank=True)
-    country = models.CharField(
-        max_length=2, choices=crm_settings.COUNTRIES, blank=True)
+    country = CountryField(null=True)
     lat = models.DecimalField(
         max_digits=18, decimal_places=15, blank=True, null=True)
     lng = models.DecimalField(
@@ -83,13 +93,13 @@ class Contact(models.Model):
         blank=True,
         null=True,
         related_name="user_created_contact"
-        )
+    )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
         related_name="user_modified_contact"
-        )
+    )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -105,11 +115,11 @@ class Contact(models.Model):
 
     @property
     def title_verbal(self):
-        return dict(crm_settings.TITLE).get(self.title)
+        return dict(self.TITLE).get(self.title)
 
     @property
     def country_verbal(self):
-        return dict(crm_settings.COUNTRIES).get(self.country)
+        return self.country
 
     @property
     def contact_number(self):
@@ -137,13 +147,13 @@ class Note(models.Model):
         blank=True,
         null=True,
         related_name="user_created"
-        )
+    )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
         related_name="user_modified"
-        )
+    )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -166,13 +176,13 @@ class Action(models.Model):
         blank=True,
         null=True,
         related_name="action_created"
-        )
+    )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
         related_name="action_modified"
-        )
+    )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -195,13 +205,15 @@ class Action(models.Model):
 class Enquiry(models.Model):
     full_name = models.CharField(max_length=50, null=True)
     email = models.EmailField(null=True)
-    message = models.TextField(max_length=500)
+    data = models.TextField(null=True)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-date_created']
+        verbose_name = 'Enquiry'
+        verbose_name_plural = 'Enquiries'
 
     def __str__(self):
         return self.full_name

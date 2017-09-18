@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
-from account.models import User
-from crm.models import Category
+from cotidia.account.models import User
+from cotidia.crm.models import Category
 
 
 class CategoryTests(TestCase):

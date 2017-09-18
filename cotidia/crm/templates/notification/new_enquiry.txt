@@ -1,7 +1,7 @@
 New enquiry
-            
+
 CONTACT DETAILS
-{{full_name}}
+{{name}}
 {{email}}
 
 MESSAGE

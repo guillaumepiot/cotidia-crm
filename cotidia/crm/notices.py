@@ -21,7 +21,7 @@ class EnquiryNotice(Notice):
     # A JSON representation of the context dictionary,
     # which is the format it will be saved as in the EmailLog
     context = {
-        "full_name": "Guillaume Piot",
+        "name": "Guillaume Piot",
         "email": "guillaume@piot.co.uk",
         "message": "Hello!",
         "enquiry_url": "/admin/crm/enquiry/21/"

@@ -4,7 +4,8 @@ from django.core import mail
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from account.doc import Doc
+from cotidia.account.doc import Doc
+from cotidia.crm.conf import settings
 
 
 class EnquiryTests(APITestCase):
@@ -15,6 +16,8 @@ class EnquiryTests(APITestCase):
         'send': 'crm-api:enquiry-send',
     }
 
+    display_doc = True
+
     def setUp(self):
         self.doc = Doc()
 
@@ -24,29 +27,32 @@ class EnquiryTests(APITestCase):
         url = reverse(self.URLS['send'])
 
         data = {
-            'full_name': "John Crimson",
+            'name': "John Crimson",
             'email': "john@crimson.com",
             'message': "Hello!"
         }
 
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['full_name'], "John Crimson")
-        self.assertEqual(response.data['email'], "john@crimson.com")
-        self.assertEqual(response.data['message'], "Hello!")
+        self.assertEqual(response.data['name'], data['name'])
+        self.assertEqual(response.data['email'], data['email'])
+        self.assertEqual(response.data['message'], data['message'])
 
         # Test that one message has been sent.
         self.assertEqual(len(mail.outbox), 1)
 
         # Test that the reply email is the one from the user
-        self.assertEqual(mail.outbox[0].reply_to, ["john@crimson.com"])
+        self.assertEqual(
+            mail.outbox[0].reply_to,
+            [settings.CRM_ENQUIRY_REPLY_TO_EMAIL]
+        )
 
-        # Generate documentation
-        content = {
-            'title': "Send enquiry",
-            'http_method': 'POST',
-            'url': url,
-            'payload': data,
-            'response': response.data,
-        }
-        self.doc.display_section(content)
+        if self.display_doc:
+            content = {
+                'title': "Send enquiry",
+                'http_method': 'POST',
+                'url': url,
+                'payload': data,
+                'response': response.data,
+            }
+            self.doc.display_section(content)
