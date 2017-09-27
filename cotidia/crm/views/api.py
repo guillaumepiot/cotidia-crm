@@ -28,7 +28,7 @@ class EnquirySend(APIView):
         if serializer.is_valid():
             data = JSONRenderer().render(serializer.data)
             obj = Enquiry.objects.create(data=data)
-
+            print(type(data))
             data_json = json.loads(data)
 
             data_json['enquiry_url'] = reverse(
