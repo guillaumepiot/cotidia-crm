@@ -23,12 +23,16 @@ class EnquirySend(APIView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
 
+        success_message = kwargs.get(
+            "success_message",
+            "Thank your for your enquiry."
+        )
+
         serializer = EnquirySerializer(data=request.data)
 
         if serializer.is_valid():
             data = JSONRenderer().render(serializer.data)
             obj = Enquiry.objects.create(data=data)
-            print(type(data))
             data_json = json.loads(data)
 
             data_json['enquiry_url'] = reverse(
@@ -66,10 +70,10 @@ class EnquirySend(APIView):
             notice.send()
 
             data = {
-                "message": "Message sent.",
+                "message": success_message,
                 "data": serializer.data
             }
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
