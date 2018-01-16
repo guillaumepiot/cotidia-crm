@@ -31,7 +31,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'names',
-        'django-countries>=4.6.1',
+        'django-countries==5.0.*',
     ],
     classifiers=[
         'Framework :: Django',

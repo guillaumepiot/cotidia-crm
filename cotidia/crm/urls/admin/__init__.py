@@ -1,5 +1,7 @@
 from django.conf.urls import url, include
 
+app_name = 'cotidia.crm'
+
 urlpatterns = [
     url(r'^contact/note/', include('cotidia.crm.urls.admin.note')),
     url(r'^contact/', include('cotidia.crm.urls.admin.contact')),

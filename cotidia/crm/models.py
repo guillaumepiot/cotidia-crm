@@ -55,7 +55,9 @@ class Contact(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
 
-    company = models.ForeignKey(Company, blank=True, null=True)
+    company = models.ForeignKey(
+        Company, blank=True, null=True, on_delete=models.CASCADE
+    )
     job = models.CharField(max_length=100, blank=True)
     photo = models.ImageField(
         upload_to='contact',
@@ -92,13 +94,15 @@ class Contact(models.Model):
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="user_created_contact"
+        related_name="user_created_contact",
+        on_delete=models.SET_NULL
     )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="user_modified_contact"
+        related_name="user_modified_contact",
+        on_delete=models.SET_NULL
     )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -141,18 +145,22 @@ class Contact(models.Model):
 
 class Note(models.Model):
     comment = models.TextField(max_length=3000)
-    contact = models.ForeignKey('crm.Contact', blank=True, null=True)
+    contact = models.ForeignKey(
+        'crm.Contact', blank=True, null=True, on_delete=models.CASCADE
+    )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="user_created"
+        related_name="user_created",
+        on_delete=models.SET_NULL
     )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="user_modified"
+        related_name="user_modified",
+        on_delete=models.SET_NULL
     )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -170,18 +178,22 @@ class Action(models.Model):
     due_date = models.DateField()
     due_time = models.TimeField(blank=True, null=True)
     completed = models.BooleanField(default=0)
-    contact = models.ForeignKey('crm.Contact', blank=True, null=True)
+    contact = models.ForeignKey(
+        'crm.Contact', blank=True, null=True, on_delete=models.CASCADE
+    )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="action_created"
+        related_name="action_created",
+        on_delete=models.SET_NULL
     )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="action_modified"
+        related_name="action_modified",
+        on_delete=models.SET_NULL
     )
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)

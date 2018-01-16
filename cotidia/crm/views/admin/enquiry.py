@@ -1,6 +1,6 @@
 # from django.views.generic import ListView, DetailView
 # from django.views.generic.edit import DeleteView
-# from django.core.urlresolvers import reverse
+# from django.urls import reverse
 # from django.utils.translation import ugettext_lazy as _
 # from django.contrib import messages
 
@@ -44,12 +44,12 @@ from cotidia.crm.models import Enquiry
 
 class EnquiryList(AdminListView):
     columns = (
-        ('Name', 'full_name'),
-        ('Email', 'email'),
-        ('Date Created', 'created_at'),
+        ('Data', 'data'),
     )
     model = Enquiry
     add_view = False
+    row_actions = ['view']
+    row_click_action = 'detail'
 
 
 class EnquiryDetail(AdminDetailView):
@@ -60,18 +60,10 @@ class EnquiryDetail(AdminDetailView):
             "fields": [
                 [
                     {
-                        "label": "Name",
-                        "field": "full_name",
-                    },
-                    {
-                        "label": "Email",
-                        "field": "email",
+                        "label": "Data",
+                        "field": "data",
                     }
-                ],
-                {
-                    "label": "Message",
-                    "field": "message",
-                }
+                ]
             ]
         }
     ]
