@@ -28,7 +28,6 @@
         elm.reset()
         clearFormError(elm)
         var successData = JSON.parse(xhr.responseText)
-        console.log(successData)
         var successNode = document.createElement("div")
         successNode.className = 'alert alert--success'
         successNode.innerHTML = successData['message']
