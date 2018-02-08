@@ -152,14 +152,14 @@ class Note(models.Model):
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="user_created",
+        related_name="note_created_by",
         on_delete=models.SET_NULL
     )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="user_modified",
+        related_name="note_modified_by",
         on_delete=models.SET_NULL
     )
     date_created = models.DateTimeField(auto_now_add=True)
@@ -185,14 +185,14 @@ class Action(models.Model):
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="action_created",
+        related_name="action_created_by",
         on_delete=models.SET_NULL
     )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
-        related_name="action_modified",
+        related_name="action_modified_by",
         on_delete=models.SET_NULL
     )
     date_created = models.DateTimeField(auto_now_add=True)
