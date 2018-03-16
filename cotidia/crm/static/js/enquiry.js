@@ -43,9 +43,9 @@
   function clearFormError (elm) {
     elm.querySelectorAll('.form__group--error').forEach(function (group) {
       group.classList.remove('form__group--error')
-      group.querySelectorAll('.form__error').forEach(function (error) {
-        error.remove()
-      })
+      var errorNode = group.querySelector(".form__help")
+      // Save original help text
+      errorNode.innerHTML = errorNode.dataset.help
     })
   }
 
@@ -57,8 +57,9 @@
     }
     formField.classList.add('form__group--error')
     // Display error
-    var errorNode = document.createElement("div")
-    errorNode.classList.add('form__error')
+    var errorNode = formField.querySelector(".form__help")
+    // Save original help text
+    errorNode.dataset.help = errorNode.innerHTML
     errorNode.innerHTML = error_message[0]
     formField.appendChild(errorNode)
   }
