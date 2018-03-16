@@ -1,4 +1,4 @@
-{% extends "admin/account/page.html" %}{% load i18n %}
+{% extends "admin/page.html" %}{% load i18n %}
 {% block title %}
     {% if object %}
         {% trans "Edit Action" %}
@@ -11,13 +11,13 @@
     <span class="toolbar__title">{% trans "Action" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:action-list' %}">{% trans "Action" %}</a>  
+        <a href="{% url 'crm-admin:action-list' %}">{% trans "Action" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% if object %}
-            <a href="{% url 'crm-admin:action-detail' object.id %}">{{object}}</a>  
+            <a href="{% url 'crm-admin:action-detail' object.id %}">{{object}}</a>
             &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
             {% trans "Edit Action" %}
         {% else %}
@@ -62,7 +62,7 @@
                 {% with form.title as field %}
                     {% include "admin/includes/text-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -74,7 +74,7 @@
                 {% with form.description as field %}
                     {% include "admin/includes/text-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -86,7 +86,7 @@
                 {% with form.completed as field %}
                     {% include "admin/includes/checkbox-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
     </fieldset>
 </div>
@@ -103,7 +103,7 @@
                 {% with form.due_date as field %}
                     {% include "admin/includes/text-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -115,7 +115,7 @@
                 {% with form.due_time as field %}
                     {% include "admin/includes/text-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
     </fieldset>
 </div>
@@ -133,7 +133,7 @@
                 {% with form.contact as field %}
                     {% include "admin/includes/select-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
     </fieldset>
 </div>
@@ -144,4 +144,4 @@
     </button>
 </div>
 </form>
-{% endblock content %}
+{% endblock %}

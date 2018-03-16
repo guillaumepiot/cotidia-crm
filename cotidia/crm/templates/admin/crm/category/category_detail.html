@@ -1,10 +1,10 @@
-{% extends "admin/account/page.html" %}{% load i18n humanize %}
+{% extends "admin/page.html" %}{% load i18n humanize %}
 {% block title %}
     {% trans "Category details" %}
 {% endblock title %}
 
 {% block toolbar %}
-    <a href="{% url 'crm-admin:category-update' object.id %}" 
+    <a href="{% url 'crm-admin:category-update' object.id %}"
         class="[ toolbar__item ] [ btn btn--change btn--small pull-right ]">
         <span class="fa fa-pencil"></span>
         {% trans "Edit Category" %}
@@ -12,19 +12,19 @@
     <span class="toolbar__title">{% trans "Category" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
-        <a href="{% url 'crm-admin:category-list' %}">{% trans "Categories" %}</a>  
+        <a href="{% url 'crm-admin:category-list' %}">{% trans "Categories" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% trans "Category details" %}
     </p>
 </div>
 
 <div class="[ content__inner ]">
-    <h1>{{object.name}}</h1>        
+    <h1>{{object.name}}</h1>
     {% with object.contacts as object_list %}
         {% include 'admin/crm/contact_list.html' %}
     {% endwith %}
@@ -41,5 +41,5 @@
         {% trans "Edit Category" %}
     </a>
     {% endif %}
-</div>      
-{% endblock content %}
+</div>
+{% endblock %}

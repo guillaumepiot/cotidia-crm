@@ -1,4 +1,4 @@
-{% extends "admin/account/page.html" %}{% load i18n humanize %}
+{% extends "admin/page.html" %}{% load i18n humanize %}
 {% block title %}
     {% trans "Contact details" %}
 {% endblock title %}
@@ -9,7 +9,7 @@
 {% endblock header_scripts %}
 
 {% block toolbar %}
-    <a href="{% url 'crm-admin:contact-update' object.id %}" 
+    <a href="{% url 'crm-admin:contact-update' object.id %}"
         class="[ toolbar__item ] [ btn btn--change btn--small pull-right ]">
         <span class="fa fa-pencil"></span>
         {% trans "Edit Contact" %}
@@ -17,10 +17,10 @@
     <span class="toolbar__title">{% trans "Contacts" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% trans "Contact details" %}
     </p>
@@ -54,7 +54,7 @@
                         {{object.website}}
                     </a><br>
                 {% else %}
-                {% trans "No website" %}  
+                {% trans "No website" %}
                 {% endif %}
             </p>
         </div>
@@ -67,14 +67,14 @@
                     {{object.company}}
                 </a>
                 {% else %}
-                {% trans "No company assigned" %}    
+                {% trans "No company assigned" %}
                 {% endif %}
-                
+
             </p>
             {% if object.job %}
             <p>
                 <span class="attribute-label">{% trans "Job Position" %}</span><br>
-                {{object.job}}                
+                {{object.job}}
             </p>
             {% endif %}
             <p>
@@ -82,13 +82,13 @@
                 {% for c in object.category.all %}
                     <a href="{% url 'crm-admin:category-detail' c.id %}">{{c}}</a><br>
                 {% empty %}
-                {% trans "No category assigned" %}    
+                {% trans "No category assigned" %}
                 {% endfor %}
             </p>
         </div>
     </div>
 </div>
-   
+
 
 <div class="grid grid--collapse">
     <div class="grid__span-6">
@@ -107,7 +107,7 @@
                     {% else %}
                         <span class="fa fa-clock-o"></span>
                     {% endif %}
-                    {{action.due_date|date:"d F Y"}} 
+                    {{action.due_date|date:"d F Y"}}
                     {% if action.due_time %}
                         - {{action.due_time|date:"g:i A"}}
                     {% endif %}
@@ -170,8 +170,8 @@
                     {% trans "Add a new note" %}
                 </a>
             </p>
-        </div> 
-    </div>  
+        </div>
+    </div>
     <div class="grid__span-6">
         <div class="[ content__inner ] [ box box--padded box--bordered ]">
             <p>
@@ -226,7 +226,7 @@
                 <span class="attribute-label">{% trans "Created" %}</span><br>
                 {{object.created_by}} - {{object.date_created}}
             </p>
-        </div>  
+        </div>
         <div class="grid__span-6">
             <p>
                 <span class="attribute-label">{% trans "Modified" %}</span><br>
@@ -238,5 +238,5 @@
             </p>
         </div>
     </div>
-</div>     
-{% endblock content %}
+</div>
+{% endblock %}

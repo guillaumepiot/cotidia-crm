@@ -1,4 +1,4 @@
-{% extends "admin/account/page.html" %}{% load i18n staticfiles %}
+{% extends "admin/page.html" %}{% load i18n staticfiles %}
 {% block title %}
     {% if object %}
         {% trans "Edit Note" %}
@@ -16,13 +16,13 @@
     <span class="toolbar__title">{% trans "Note" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% if contact %}
-            <a href="{% url 'crm-admin:contact-detail' contact.id %}">{{contact}}</a>  
+            <a href="{% url 'crm-admin:contact-detail' contact.id %}">{{contact}}</a>
             &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% endif %}
         {% if object %}
@@ -66,7 +66,7 @@
                     <trix-editor input="id_comment"></trix-editor>
                     {% include "admin/includes/text-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
     </fieldset>
 </div>
@@ -87,4 +87,4 @@
     <p><a href="{% url 'crm-admin:contact-list' %}">{% trans "Back to contact list" %}</a></p>
 </div>
 {% endif %}
-{% endblock content %}
+{% endblock %}

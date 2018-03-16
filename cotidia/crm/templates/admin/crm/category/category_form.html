@@ -1,4 +1,4 @@
-{% extends "admin/account/page.html" %}{% load i18n %}
+{% extends "admin/page.html" %}{% load i18n %}
 {% block title %}
     {% if object %}
         {% trans "Edit Category" %}
@@ -11,15 +11,15 @@
     <span class="toolbar__title">{% trans "Category" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>  
+        <a href="{% url 'crm-admin:contact-list' %}">{% trans "Contacts" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
-        <a href="{% url 'crm-admin:category-list' %}">{% trans "Categories" %}</a>  
+        <a href="{% url 'crm-admin:category-list' %}">{% trans "Categories" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% if object %}
-            <a href="{% url 'crm-admin:category-detail' object.id %}">{{object}}</a>  
+            <a href="{% url 'crm-admin:category-detail' object.id %}">{{object}}</a>
             &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
             {% trans "Edit Category" %}
         {% else %}
@@ -50,7 +50,7 @@
                 {% with form.name as field %}
                     {% include "admin/includes/text-field.html" %}
                 {% endwith %}
-            </div>  
+            </div>
         </div>
     </fieldset>
 </div>
@@ -60,4 +60,4 @@
     </button>
 </div>
 </form>
-{% endblock content %}
+{% endblock %}

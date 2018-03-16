@@ -1,4 +1,4 @@
-{% extends "admin/account/page.html" %}{% load i18n %}
+{% extends "admin/page.html" %}{% load i18n %}
 {% block title %}
     {% trans "Contacts" %}
 {% endblock title %}
@@ -25,7 +25,7 @@
     <span class="toolbar__title">{% trans "Contacts" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="grid grid--collapse">
     <div class="grid__span-12">
         <div class="content__inner">
@@ -69,7 +69,7 @@
             </div>
             <form action="" method="get" class="contact-search-form">
                 <div class="form__control form__control--text">
-                    <input type="text" name="query" class="form__text" 
+                    <input type="text" name="query" class="form__text"
                         value="{% if search_query %}{{search_query}}{% endif %}">
                     <button type="submit" class="btn btn--transparent">
                         <span class="fa fa-search"></span>
@@ -77,8 +77,8 @@
                 </div>
             </form>
             {% include 'admin/crm/contact_list.html' %}
-            {% include 'admin/includes/pagination.html' %}
+            {% include 'admin/generic/pagination.html' %}
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

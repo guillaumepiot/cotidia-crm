@@ -1,10 +1,10 @@
-{% extends "admin/account/page.html" %}{% load i18n humanize %}
+{% extends "admin/page.html" %}{% load i18n humanize %}
 {% block title %}
     {% trans "Action details" %}
 {% endblock title %}
 
 {% block toolbar %}
-    <a href="{% url 'crm-admin:action-update' object.id %}" 
+    <a href="{% url 'crm-admin:action-update' object.id %}"
         class="[ toolbar__item ] [ btn btn--change btn--small pull-right ]">
         <span class="fa fa-pencil"></span>
         {% trans "Edit Action" %}
@@ -12,10 +12,10 @@
     <span class="toolbar__title">{% trans "Action" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="[ content__inner ]">
     <p class="breadcrumb">
-        <a href="{% url 'crm-admin:action-list' %}">{% trans "Action" %}</a>  
+        <a href="{% url 'crm-admin:action-list' %}">{% trans "Action" %}</a>
         &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
         {% trans "Action details" %}
     </p>
@@ -32,7 +32,7 @@
             </div>
             <div class="grid__span-3">
                 <p>{{object.title}}</p>
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -42,7 +42,7 @@
             </div>
             <div class="grid__span-3">
                 <p>{{object.description}}</p>
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -58,7 +58,7 @@
                     <span class="fa fa-remove fa-red"></span>
                 {% endif %}
                 </p>
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -68,12 +68,12 @@
             </div>
             <div class="grid__span-3">
                 <p>
-                {{object.due_date|date:"d F Y"}} 
+                {{object.due_date|date:"d F Y"}}
                 {% if object.due_time %}
                     - {{object.due_time|date:"g:i A"}}
                 {% endif %}
                 </p>
-            </div>  
+            </div>
         </div>
         <div class="grid">
             <div class="grid__span-2">
@@ -87,7 +87,7 @@
                     {{object.contact}}
                 {% endif %}
                 </p>
-            </div>  
+            </div>
         </div>
     </fieldset>
 </div>
@@ -103,5 +103,5 @@
         {% trans "Edit Action" %}
     </a>
     {% endif %}
-</div>      
-{% endblock content %}
+</div>
+{% endblock %}

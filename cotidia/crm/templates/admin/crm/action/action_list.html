@@ -1,4 +1,4 @@
-{% extends "admin/account/page.html" %}{% load i18n %}
+{% extends "admin/page.html" %}{% load i18n %}
 {% block title %}
     {% trans "Actions" %}
 {% endblock title %}
@@ -13,7 +13,7 @@
     <span class="toolbar__title">{% trans "Action" %}</span>
 {% endblock toolbar %}
 
-{% block content %}
+{% block page_content %}
 <div class="grid grid--collapse">
     <div class="grid__span-12">
         <div class="content__inner">
@@ -25,11 +25,11 @@
                     <th class="table-head-cell">{% trans "Contact" %}</th>
                 </tr>
                 {% for object in object_list %}
-                <tr class="table-row{% if object.overdue %} table-row--red{% endif %}" 
+                <tr class="table-row{% if object.overdue %} table-row--red{% endif %}"
                     onClick="window.location = '{% url 'crm-admin:action-detail' object.id %}'">
                     <td class="table-cell">{{object.title}}</td>
                     <td class="table-cell">
-                    {{object.due_date|date:"d F Y"}} 
+                    {{object.due_date|date:"d F Y"}}
                     {% if object.due_time %}
                         - {{object.due_time|date:"g:i A"}}
                     {% endif %}
@@ -54,4 +54,4 @@
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}
