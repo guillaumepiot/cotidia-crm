@@ -32,6 +32,8 @@
         successNode.className = 'alert alert--success'
         successNode.innerHTML = successData['message']
         elm.prepend(successNode)
+        var event = new Event('formfieldsetclass');
+        document.dispatchEvent(event);
       }
 
     };
