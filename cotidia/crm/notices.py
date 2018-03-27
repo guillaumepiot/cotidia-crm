@@ -15,16 +15,19 @@ class EnquiryNotice(Notice):
 
     # A context passed to every request (merge with `context`)
     default_context = {
-        'SITE_URL': settings.SITE_URL
+        'SITE_URL': settings.SITE_URL,
+        'SITE_NAME': settings.SITE_NAME
     }
 
     # A JSON representation of the context dictionary,
     # which is the format it will be saved as in the EmailLog
     context = {
-        "name": "Guillaume Piot",
-        "email": "guillaume@piot.co.uk",
-        "message": "Hello!",
-        "enquiry_url": "/admin/crm/enquiry/21/"
+        'data': {
+            'name': "Guillaume Piot",
+            'email': "guillaume@piot.co.uk",
+            'message': "Hello!",
+            'enquiry_url': "/admin/crm/enquiry/21/"
+        }
     }
 
     # Passing on come context variables to build the subject line

@@ -1,11 +1,10 @@
 New enquiry
 
-CONTACT DETAILS
-{{name}}
-{{email}}
-
-MESSAGE
-{{message}}
+{% for k, v in data.items %}
+  {% if k != 'enquiry_url' %}
+  {{k|capfirst}}: {{v}}
+  {% endif %}
+{% endfor %}
 
 View inquiry online
 {{SITE_URL}}{{enquiry_url}}

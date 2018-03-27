@@ -44,7 +44,9 @@ from cotidia.crm.models import Enquiry
 
 class EnquiryList(AdminListView):
     columns = (
-        ('Data', 'data'),
+        ('Type', 'enquiry_type'),
+        ('Email', 'email'),
+        ('Date', 'date_created'),
     )
     model = Enquiry
     add_view = False

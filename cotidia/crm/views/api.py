@@ -27,12 +27,17 @@ class EnquirySend(APIView):
             "success_message",
             "Thank your for your enquiry."
         )
-
-        serializer = EnquirySerializer(data=request.data)
+        serializer_class = kwargs.get('serializer_class', EnquirySerializer)
+        enquiry_type = kwargs.get('enquiry_type', 'No type specified')
+        serializer = serializer_class(data=request.data)
 
         if serializer.is_valid():
-            data = JSONRenderer().render(serializer.data)
-            obj = Enquiry.objects.create(data=data)
+            data = JSONRenderer().render(serializer.data).decode('utf-8')
+            obj = Enquiry.objects.create(
+                email=serializer.data.get('email', ''),
+                data=data,
+                enquiry_type=enquiry_type
+            )
             data_json = json.loads(data)
 
             data_json['enquiry_url'] = reverse(
@@ -63,7 +68,9 @@ class EnquirySend(APIView):
                 sender=sender,
                 reply_to=reply_to,
                 recipients=recipients,
-                context=data_json,
+                context={
+                    'data': data_json
+                },
                 content_object=obj
             )
             # Send the notice straight away

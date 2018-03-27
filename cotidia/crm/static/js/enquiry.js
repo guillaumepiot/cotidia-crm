@@ -27,6 +27,11 @@
       if(xhr.status >= 200 && xhr.status < 300) {
         elm.reset()
         clearFormError(elm)
+        // Try remove the alert if there
+        let alertElm = elm.querySelector('.alert')
+        if (alertElm) {
+          alertElm.remove()
+        }
         var successData = JSON.parse(xhr.responseText)
         var successNode = document.createElement("div")
         successNode.className = 'alert alert--success'

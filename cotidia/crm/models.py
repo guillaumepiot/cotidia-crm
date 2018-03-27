@@ -1,4 +1,6 @@
 import datetime
+import json
+
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -215,9 +217,9 @@ class Action(models.Model):
 
 
 class Enquiry(models.Model):
-    full_name = models.CharField(max_length=50, null=True)
     email = models.EmailField(null=True)
     data = models.TextField(null=True)
+    enquiry_type = models.CharField(max_length=255, null=True)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -228,4 +230,8 @@ class Enquiry(models.Model):
         verbose_name_plural = 'Enquiries'
 
     def __str__(self):
-        return self.full_name
+        return "Enquiry ({})".format(self.enquiry_type)
+
+    def data_to_dict(self):
+        print(self.data, type(self.data))
+        return json.loads(self.data)
