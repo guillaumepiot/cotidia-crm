@@ -1,24 +1,18 @@
 {% extends "admin/generic/page/detail.html" %}
 {% load i18n admin_list_tags admin_toolbar_tags admin_detail_tags %}
 
-{% block toolbar %}
+{% block content_actions %}
     <a href="{% get_admin_url app_label model_name "delete" object %}" class="btn btn--delete btn--small toolbar__item">
         <span class="fa fa-times"></span>
         {% blocktrans with verbose_name as verbose_name %}
             Delete
         {% endblocktrans %}
     </a>
-    <span class="toolbar__breadcrumbs">
-        <a href="{% get_admin_url app_label model_name 'list' %}">{{verbose_name_plural}}</a>
-        &nbsp;<span class="fa fa-angle-right"></span>&nbsp;
-        {% blocktrans with verbose_name as verbose_name %}
-            {{verbose_name}} details
-        {% endblocktrans %}
-    </span>
-{% endblock toolbar %}
+{% endblock content_actions %}
 
 {% block page_content %}
-<div class="form">
+<div class="content__body">
+    <div class="content__inner">
     {% for fieldset in fieldsets %}
         {% if fieldset.template_name %}
             {% include fieldset.template_name with object=object %}
@@ -41,14 +35,22 @@
         </fieldset>
         {% endif %}
     {% endfor %}
-    {% block form_actions %}
-    <div class="form__actions">
-        <div class="form__actions-inner">
-            <a href="{% get_admin_url app_label model_name 'list' %}" class="btn btn--transparent pull-right">
+    </div>
+</div>
+{% block form_actions %}
+<div class="content__foot">
+    <div class="content__inner content-foot">
+        <div class="content-foot__left">
+            <div class="content__foot-left">
+                <a href="{% get_admin_url app_label model_name 'list' %}" class="btn btn--transparent pull-right">
                 {% trans "Back" %}
             </a>
+            </div>
+        </div>
+        <div class="content-foot__right">
         </div>
     </div>
-    {% endblock form_actions %}
 </div>
+{% endblock form_actions %}
 {% endblock page_content %}
+
