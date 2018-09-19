@@ -9,6 +9,8 @@
 
     xhr.onerror = function (e) {
       console.error('Error sending.')
+      var errorEvent = new Event('cotidia.crm.enquiry.error');
+      document.dispatchEvent(errorEvent);
     }
 
     xhr.onload = function () {
@@ -22,8 +24,8 @@
               displayFieldError(elm, key, errorData[key])
           }
         }
-        var errorEvent = new Event('cotidia.crm.enquiryError');
-        document.dispatchEvent(errorEvent);
+        var invalidEvent = new Event('cotidia.crm.enquiry.invalid');
+        document.dispatchEvent(invalidEvent);
       }
 
       if(xhr.status >= 200 && xhr.status < 300) {
@@ -41,7 +43,7 @@
         elm.prepend(successNode)
         var formFieldEvent = new Event('formfieldsetclass');
         document.dispatchEvent(formFieldEvent);
-        var successEvent = new Event('cotidia.crm.enquirySuccess');
+        var successEvent = new Event('cotidia.crm.enquiry.success');
         document.dispatchEvent(successEvent);
       }
 
