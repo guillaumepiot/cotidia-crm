@@ -22,8 +22,8 @@
               displayFieldError(elm, key, errorData[key])
           }
         }
-        var successEvent = new Event('cotidia.crm.enquiryError');
-        document.dispatchEvent(successEvent);
+        var errorEvent = new Event('cotidia.crm.enquiryError');
+        document.dispatchEvent(errorEvent);
       }
 
       if(xhr.status >= 200 && xhr.status < 300) {
