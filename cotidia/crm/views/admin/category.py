@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 
-from cotidia.account.utils import StaffPermissionRequiredMixin
+from cotidia.admin.mixins import StaffPermissionRequiredMixin
 from cotidia.crm.models import Category
 from cotidia.crm.forms.admin.category import (
     CategoryAddForm,

@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
-from cotidia.account.utils import StaffPermissionRequiredMixin
+from cotidia.admin.mixins import StaffPermissionRequiredMixin
 from cotidia.crm.models import Note, Contact
 from cotidia.crm.forms.admin.note import (
     NoteAddForm,

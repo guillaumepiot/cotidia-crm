@@ -4,7 +4,7 @@
 # from django.utils.translation import ugettext_lazy as _
 # from django.contrib import messages
 
-# from cotidia.account.utils import StaffPermissionRequiredMixin
+# from cotidia.admin.mixins import StaffPermissionRequiredMixin
 # from cotidia.crm.models import Enquiry
 
 
